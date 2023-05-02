@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#plansza {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.pole {
+    border: 1px solid;
+}
