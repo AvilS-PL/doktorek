@@ -1,0 +1,12 @@
+pozycje:
+0 - poziom 1 2
+1 - pion 1 2
+2 - poziom 2 1
+3 - pion 2 1
+
+mapowanie:
+0 - puste 
+1 - red
+2 - yellow
+3 - blue
+9 - player
