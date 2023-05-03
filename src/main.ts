@@ -307,8 +307,28 @@ function checkKill() {
                 poziom.push(j + 1)
             } else if (poziom.length >= 4) {
                 kill(poziom, i, false)
+                poziom.length = 0
             } else {
                 poziom.length = 0
+            }
+
+        }
+    }
+    for (let i = 0; i < main.width; i++) {
+        let pion = []
+        for (let j = 0; j < main.height; j++) {
+
+            if (pion.length == 0) {
+                pion.push(j)
+            }
+
+            if (main.tab[j + 1] != undefined && main.tab[j + 1][i] != 0 && main.tab[j][i] == main.tab[j + 1][i]) {
+                pion.push(j + 1)
+            } else if (pion.length >= 4) {
+                kill(pion, i, true)
+                pion.length = 0
+            } else {
+                pion.length = 0
             }
 
         }
@@ -320,15 +340,24 @@ function kill(a: number[], b: number, rev: boolean) {
         dane.pills.map((item, i) => {
             if (b == item.y1 && a.includes(item.x1)) {
                 item.color1 = "white"
-                console.log("Kill: " + item.y1 + "-" + item.x1)
+                console.log("Kill: " + item.y1 + "-" + item.x1 + "piewrwszy")
             }
             if (b == item.y2 && a.includes(item.x2)) {
                 item.color2 = "white"
-                console.log("Kill: " + item.y2 + "-" + item.x2)
+                console.log("Kill: " + item.y2 + "-" + item.x2 + "drugi")
             }
         })
     } else {
-
+        dane.pills.map((item, i) => {
+            if (b == item.x1 && a.includes(item.y1)) {
+                item.color1 = "white"
+                console.log("Kill: " + item.y1 + "-" + item.x1 + "piewrwszy")
+            }
+            if (b == item.x2 && a.includes(item.y2)) {
+                item.color2 = "white"
+                console.log("Kill: " + item.y2 + "-" + item.x2 + "drugi")
+            }
+        })
     }
 }
 
