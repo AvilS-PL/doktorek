@@ -36,11 +36,11 @@ function render() {
 
         if (dane.pills[i].color1 != "white") {
             document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).style.backgroundColor = dane.pills[i].color1
-            document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).innerText = main.tab[dane.pills[i].y1][dane.pills[i].x1].toString()
+            document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).innerText = i.toString()
         }
         if (dane.pills[i].color2 != "white") {
             document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).style.backgroundColor = dane.pills[i].color2
-            document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).innerText = main.tab[dane.pills[i].y2][dane.pills[i].x2].toString()
+            document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).innerText = i.toString()
         }
     }
 
@@ -95,6 +95,7 @@ function gravity() {
     }
 }
 function spadanie() {
+    render()
     let zmiana = 0
     for (let i = main.height - 1; i >= 0; i--) {
         dane.pills.map((item, j) => {
@@ -130,7 +131,7 @@ function spadanie() {
                             render()
                             zmiana++
                         }
-                    } else {
+                    } else if (item.color1 != "white" && item.color2 == "white") {
                         if (main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0) {
                             item.y1++
                             render()
@@ -145,7 +146,7 @@ function spadanie() {
                             render()
                             zmiana++
                         }
-                    } else {
+                    } else if (item.color1 == "white" && item.color2 != "white") {
                         if (main.tab[item.y2 + 1] != undefined && main.tab[item.y2 + 1][item.x2] == 0) {
                             item.y2++
                             render()
@@ -158,6 +159,9 @@ function spadanie() {
     }
     if (zmiana == 0) {
         dane.state = "play"
+        checkKill()
+    }
+    if (dane.state == "play") {
         createPill()
         render()
     }
@@ -380,6 +384,7 @@ function checkKill() {
             } else if (poziom.length >= 4) {
                 kill(poziom, i, false)
                 poziom.length = 0
+                dane.state = "spadanie"
             } else {
                 poziom.length = 0
             }
@@ -435,10 +440,8 @@ setInterval(() => {
     if (dane.state == "play") {
         gravity()
         render()
-    }
-    if (dane.state == "spadanie") {
+    } else if (dane.state == "spadanie") {
         spadanie()
-
     }
 
 }, 1000);
