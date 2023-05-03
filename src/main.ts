@@ -16,8 +16,7 @@ function render() {
     })
 
     for (let i = 0; i < dane.pills.length; i++) {
-        document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).style.backgroundColor = dane.pills[i].color1
-        document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).style.backgroundColor = dane.pills[i].color2
+
         if (dane.pills[i].color1 == "red") {
             main.tab[dane.pills[i].y1][dane.pills[i].x1] = 1
         } else if (dane.pills[i].color1 == "yellow") {
@@ -34,13 +33,21 @@ function render() {
             main.tab[dane.pills[i].y2][dane.pills[i].x2] = 3
         }
 
-        document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).innerText = main.tab[dane.pills[i].y1][dane.pills[i].x1].toString()
-        document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).innerText = main.tab[dane.pills[i].y2][dane.pills[i].x2].toString()
 
+        if (dane.pills[i].color1 != "white") {
+            document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).style.backgroundColor = dane.pills[i].color1
+            document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).innerText = main.tab[dane.pills[i].y1][dane.pills[i].x1].toString()
+        }
+        if (dane.pills[i].color2 != "white") {
+            document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).style.backgroundColor = dane.pills[i].color2
+            document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).innerText = main.tab[dane.pills[i].y2][dane.pills[i].x2].toString()
+        }
     }
 
-    main.tab[dane.pills[dane.pills.length - 1].y1][dane.pills[dane.pills.length - 1].x1] = 9
-    main.tab[dane.pills[dane.pills.length - 1].y2][dane.pills[dane.pills.length - 1].x2] = 9
+    if (dane.pills[dane.pills.length - 1].flag) {
+        main.tab[dane.pills[dane.pills.length - 1].y1][dane.pills[dane.pills.length - 1].x1] = 9
+        main.tab[dane.pills[dane.pills.length - 1].y2][dane.pills[dane.pills.length - 1].x2] = 9
+    }
 
 }
 
@@ -52,8 +59,11 @@ function gravity() {
     let y2 = dane.pills[dane.kolejka].y2
     if (rotation == 1) {
         if ((y2 + 1) == main.height || main.tab[y2 + 1][x2] == 1 || main.tab[y2 + 1][x2] == 2 || main.tab[y2 + 1][x2] == 3) {
-            createPill()
+            dane.pills[dane.kolejka].deFlag()
             checkKill()
+            if (dane.state == "play") {
+                createPill()
+            }
         } else {
             dane.pills[dane.kolejka].y1++
             dane.pills[dane.kolejka].y2++
@@ -61,34 +71,97 @@ function gravity() {
         }
     } else if (rotation == 3) {
         if ((y1 + 1) == main.height || main.tab[y1 + 1][x1] == 1 || main.tab[y1 + 1][x1] == 2 || main.tab[y1 + 1][x1] == 3) {
-            createPill()
+            dane.pills[dane.kolejka].deFlag()
             checkKill()
+            if (dane.state == "play") {
+                createPill()
+            }
         } else {
             dane.pills[dane.kolejka].y1++
             dane.pills[dane.kolejka].y2++
         }
     } else {
         if ((y1 + 1) == main.height || (y2 + 1) == main.height || main.tab[y1 + 1][x1] == 1 || main.tab[y1 + 1][x1] == 2 || main.tab[y1 + 1][x1] == 3 || main.tab[y2 + 1][x2] == 1 || main.tab[y2 + 1][x2] == 2 || main.tab[y2 + 1][x2] == 3) {
-            createPill()
+            dane.pills[dane.kolejka].deFlag()
             checkKill()
+            if (dane.state == "play") {
+                createPill()
+            }
         } else {
             dane.pills[dane.kolejka].y1++
             dane.pills[dane.kolejka].y2++
 
         }
     }
-    // for (let w = main.height - 1; w >= 0; w--) {
-
-
-    // }
-    // for (let i = 0; i < dane.pills.length; i++) {
-    //     if (dane.pills[i].y < main.height && dane.pills[i].pole2.y < main.height) {
-    //         dane.pills[i].pole1.y += 1
-    //         dane.pills[i].pole2.y += 1
-    //     }
-    // }
 }
-
+function spadanie() {
+    let zmiana = 0
+    for (let i = main.height - 1; i >= 0; i--) {
+        dane.pills.map((item, j) => {
+            if (!item.flag) {
+                if ((item.rotation == 0 || item.rotation == 2) && item.y1 == i) {
+                    if (item.color1 != "white" && item.color2 != "white") {
+                        if (main.tab[item.y2 + 1] != undefined && main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0 && main.tab[item.y2 + 1][item.x2] == 0) {
+                            item.y1++
+                            item.y2++
+                            render()
+                            zmiana++
+                        }
+                    } else if (item.color1 == "white" && item.color2 != "white") {
+                        if (main.tab[item.y2 + 1] != undefined && main.tab[item.y2 + 1][item.x2] == 0) {
+                            item.y1++
+                            item.y2++
+                            render()
+                            zmiana++
+                        }
+                    } else if (item.color1 != "white" && item.color2 == "white") {
+                        if (main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0) {
+                            item.y1++
+                            item.y2++
+                            render()
+                            zmiana++
+                        }
+                    }
+                } else if (item.rotation == 1 && item.y2 == i) {
+                    if (item.color2 != "white") {
+                        if (main.tab[item.y2 + 1] != undefined && main.tab[item.y2 + 1][item.x2] == 0) {
+                            item.y1++
+                            item.y2++
+                            render()
+                            zmiana++
+                        }
+                    } else {
+                        if (main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0) {
+                            item.y1++
+                            render()
+                            zmiana++
+                        }
+                    }
+                } else if (item.rotation == 3 && item.y1 == i) {
+                    if (item.color1 != "white") {
+                        if (main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0) {
+                            item.y1++
+                            item.y2++
+                            render()
+                            zmiana++
+                        }
+                    } else {
+                        if (main.tab[item.y2 + 1] != undefined && main.tab[item.y2 + 1][item.x2] == 0) {
+                            item.y2++
+                            render()
+                            zmiana++
+                        }
+                    }
+                }
+            }
+        })
+    }
+    if (zmiana == 0) {
+        dane.state = "play"
+        createPill()
+        render()
+    }
+}
 document.body.addEventListener("keydown", (e: KeyboardEvent) => {
     if (e.code == "KeyQ") {
         makeRotation("KeyQ")
@@ -288,7 +361,6 @@ function makeRotation(key: string) {
 }
 
 function createPill() {
-    dane.pills[dane.kolejka].deFlag()
     dane.kolejka++
     dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 }
@@ -327,6 +399,7 @@ function checkKill() {
             } else if (pion.length >= 4) {
                 kill(pion, i, true)
                 pion.length = 0
+                dane.state = "spadanie"
             } else {
                 pion.length = 0
             }
@@ -340,22 +413,18 @@ function kill(a: number[], b: number, rev: boolean) {
         dane.pills.map((item, i) => {
             if (b == item.y1 && a.includes(item.x1)) {
                 item.color1 = "white"
-                console.log("Kill: " + item.y1 + "-" + item.x1 + "piewrwszy")
             }
             if (b == item.y2 && a.includes(item.x2)) {
                 item.color2 = "white"
-                console.log("Kill: " + item.y2 + "-" + item.x2 + "drugi")
             }
         })
     } else {
         dane.pills.map((item, i) => {
             if (b == item.x1 && a.includes(item.y1)) {
                 item.color1 = "white"
-                console.log("Kill: " + item.y1 + "-" + item.x1 + "piewrwszy")
             }
             if (b == item.x2 && a.includes(item.y2)) {
                 item.color2 = "white"
-                console.log("Kill: " + item.y2 + "-" + item.x2 + "drugi")
             }
         })
     }
@@ -363,6 +432,13 @@ function kill(a: number[], b: number, rev: boolean) {
 
 
 setInterval(() => {
-    gravity()
-    render()
+    if (dane.state == "play") {
+        gravity()
+        render()
+    }
+    if (dane.state == "spadanie") {
+        spadanie()
+
+    }
+
 }, 1000);

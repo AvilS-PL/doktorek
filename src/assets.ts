@@ -67,10 +67,11 @@ export class Virus {
     }
 }
 
-export let dane: { kolejka: number, wynik: number, pills: Pill[], width: number, height: number } = {
+export let dane: { kolejka: number, wynik: number, pills: Pill[], width: number, height: number, state: string } = {
     kolejka: 0,
     wynik: 0,
     pills: [],
     width: 6,
-    height: 10
+    height: 10,
+    state: "play"
 }
