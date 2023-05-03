@@ -1,10 +1,9 @@
-import { rnc } from './functions'
 export class Plansza {
     width: number
     height: number
     size: number
     plansza: HTMLDivElement
-    tab: { check: number, color: number }[][]
+    tab: number[][]
     constructor(width: number, height: number, size: number) {
         this.width = width
         this.height = height
@@ -26,7 +25,7 @@ export class Plansza {
                 pole.className = "pole"
                 pole.id = i + "|" + j
 
-                this.tab[i][j] = { check: 0, color: 0 }
+                this.tab[i][j] = 0
                 this.plansza.append(pole)
             }
         }
@@ -43,13 +42,13 @@ export class Pill {
     color2: string
     rotation: number
     flag: boolean
-    constructor() {
+    constructor(color1: string, color2: string) {
         this.x1 = Math.floor((dane.width / 2) - 1)
         this.y1 = 0
         this.x2 = Math.floor((dane.width / 2))
         this.y2 = 0
-        this.color1 = rnc()
-        this.color2 = rnc()
+        this.color1 = color1
+        this.color2 = color2
         this.rotation = 0
         this.flag = true
     }

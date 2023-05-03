@@ -2,54 +2,46 @@ import { Plansza, Pill, Virus, dane } from './assets'
 import { rnc } from './functions'
 
 let main = new Plansza(dane.width, dane.height, 40)
-dane.pills[dane.kolejka] = new Pill()
+dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 render()
 
 function render() {
 
     main.tab.map((item, i) => {
         item.map((poditem, j) => {
-            main.tab[i][j].check = 0
+            main.tab[i][j] = 0
             document.getElementById(i + "|" + j).style.backgroundColor = "white"
+            document.getElementById(i + "|" + j).innerText = "0"
         })
     })
 
     for (let i = 0; i < dane.pills.length; i++) {
         document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).style.backgroundColor = dane.pills[i].color1
         document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).style.backgroundColor = dane.pills[i].color2
-        if (dane.pills[i].color1 == "white") {
-            document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).style.backgroundColor = "white"
-            main.tab[dane.pills[i].y1][dane.pills[i].x1].color = 0
-        } else {
-            main.tab[dane.pills[i].y1][dane.pills[i].x1].check = 1
-            if (dane.pills[i].color1 == "red") {
-                main.tab[dane.pills[i].y1][dane.pills[i].x1].color = 1
-            } else if (dane.pills[i].color1 == "yellow") {
-                main.tab[dane.pills[i].y1][dane.pills[i].x1].color = 2
-            } else if (dane.pills[i].color1 == "blue") {
-                main.tab[dane.pills[i].y1][dane.pills[i].x1].color = 3
-            }
+        if (dane.pills[i].color1 == "red") {
+            main.tab[dane.pills[i].y1][dane.pills[i].x1] = 1
+        } else if (dane.pills[i].color1 == "yellow") {
+            main.tab[dane.pills[i].y1][dane.pills[i].x1] = 2
+        } else if (dane.pills[i].color1 == "blue") {
+            main.tab[dane.pills[i].y1][dane.pills[i].x1] = 3
         }
 
-        if (dane.pills[i].color2 == "white") {
-            document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).style.backgroundColor = "white"
-            main.tab[dane.pills[i].y1][dane.pills[i].x1].color = 0
-        } else {
-            main.tab[dane.pills[i].y2][dane.pills[i].x2].check = 1
-            if (dane.pills[i].color2 == "red") {
-                main.tab[dane.pills[i].y2][dane.pills[i].x2].color = 1
-            } else if (dane.pills[i].color2 == "yellow") {
-                main.tab[dane.pills[i].y2][dane.pills[i].x2].color = 2
-            } else if (dane.pills[i].color1 == "blue") {
-                main.tab[dane.pills[i].y2][dane.pills[i].x2].color = 3
-            }
+        if (dane.pills[i].color2 == "red") {
+            main.tab[dane.pills[i].y2][dane.pills[i].x2] = 1
+        } else if (dane.pills[i].color2 == "yellow") {
+            main.tab[dane.pills[i].y2][dane.pills[i].x2] = 2
+        } else if (dane.pills[i].color2 == "blue") {
+            main.tab[dane.pills[i].y2][dane.pills[i].x2] = 3
         }
+
+        document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).innerText = main.tab[dane.pills[i].y1][dane.pills[i].x1].toString()
+        document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).innerText = main.tab[dane.pills[i].y2][dane.pills[i].x2].toString()
+
     }
 
-    main.tab[dane.pills[dane.pills.length - 1].y1][dane.pills[dane.pills.length - 1].x1].check = 9
-    main.tab[dane.pills[dane.pills.length - 1].y2][dane.pills[dane.pills.length - 1].x2].check = 9
+    main.tab[dane.pills[dane.pills.length - 1].y1][dane.pills[dane.pills.length - 1].x1] = 9
+    main.tab[dane.pills[dane.pills.length - 1].y2][dane.pills[dane.pills.length - 1].x2] = 9
 
-    console.table(main.tab)
 }
 
 function gravity() {
@@ -59,23 +51,26 @@ function gravity() {
     let y1 = dane.pills[dane.kolejka].y1
     let y2 = dane.pills[dane.kolejka].y2
     if (rotation == 1) {
-        if ((y2 + 1) == main.height || main.tab[y2 + 1][x2].check == 1) {
+        if ((y2 + 1) == main.height || main.tab[y2 + 1][x2] == 1 || main.tab[y2 + 1][x2] == 2 || main.tab[y2 + 1][x2] == 3) {
             createPill()
+            checkKill()
         } else {
             dane.pills[dane.kolejka].y1++
             dane.pills[dane.kolejka].y2++
 
         }
     } else if (rotation == 3) {
-        if ((y1 + 1) == main.height || main.tab[y1 + 1][x1].check == 1) {
+        if ((y1 + 1) == main.height || main.tab[y1 + 1][x1] == 1 || main.tab[y1 + 1][x1] == 2 || main.tab[y1 + 1][x1] == 3) {
             createPill()
+            checkKill()
         } else {
             dane.pills[dane.kolejka].y1++
             dane.pills[dane.kolejka].y2++
         }
     } else {
-        if ((y1 + 1) == main.height || (y2 + 1) == main.height || main.tab[y1 + 1][x1].check == 1 || main.tab[y2 + 1][x2].check == 1) {
+        if ((y1 + 1) == main.height || (y2 + 1) == main.height || main.tab[y1 + 1][x1] == 1 || main.tab[y1 + 1][x1] == 2 || main.tab[y1 + 1][x1] == 3 || main.tab[y2 + 1][x2] == 1 || main.tab[y2 + 1][x2] == 2 || main.tab[y2 + 1][x2] == 3) {
             createPill()
+            checkKill()
         } else {
             dane.pills[dane.kolejka].y1++
             dane.pills[dane.kolejka].y2++
@@ -128,24 +123,23 @@ function makeMove(key: string) {
 
     if (key == "KeyA") {
         if (main.tab[y1][x1 - 1] != undefined && main.tab[y2][x2 - 1] != undefined) {
-            if ((main.tab[y1][x1 - 1].check == 0 || main.tab[y1][x1 - 1].check == 9) && (main.tab[y2][x2 - 1].check == 0 || main.tab[y2][x2 - 1].check == 9)) {
+            if ((main.tab[y1][x1 - 1] == 0 || main.tab[y1][x1 - 1] == 9) && (main.tab[y2][x2 - 1] == 0 || main.tab[y2][x2 - 1] == 9)) {
                 dane.pills[dane.kolejka].x1--
                 dane.pills[dane.kolejka].x2--
             }
         }
     } else if (key == "KeyD") {
         if (main.tab[y1][x1 + 1] != undefined && main.tab[y2][x2 + 1] != undefined) {
-            if ((main.tab[y1][x1 + 1].check == 0 || main.tab[y1][x1 + 1].check == 9) && (main.tab[y2][x2 + 1].check == 0 || main.tab[y2][x2 + 1].check == 9)) {
+            if ((main.tab[y1][x1 + 1] == 0 || main.tab[y1][x1 + 1] == 9) && (main.tab[y2][x2 + 1] == 0 || main.tab[y2][x2 + 1] == 9)) {
                 dane.pills[dane.kolejka].x1++
                 dane.pills[dane.kolejka].x2++
             }
         }
     } else if (key == "KeyS") {
         if (main.tab[y1 + 1] != undefined && main.tab[y2 + 1] != undefined) {
-            if ((main.tab[y1 + 1][x1].check == 0 || main.tab[y1 + 1][x1].check == 9) && (main.tab[y2 + 1][x2].check == 0 || main.tab[y2 + 1][x2].check == 9)) {
+            if ((main.tab[y1 + 1][x1] == 0 || main.tab[y1 + 1][x1] == 9) && (main.tab[y2 + 1][x2] == 0 || main.tab[y2 + 1][x2] == 9)) {
                 dane.pills[dane.kolejka].y1++
                 dane.pills[dane.kolejka].y2++
-                console.log(main.tab[y1 + 1][x1])
             }
         }
     }
@@ -163,7 +157,7 @@ function makeRotation(key: string) {
 
     if (rotation == 0) {
         if (main.tab[y1 - 1] != undefined) {
-            if (main.tab[y1 - 1][x1].check == 0) {
+            if (main.tab[y1 - 1][x1] == 0) {
                 if (key == "KeyE") {
                     dane.pills[dane.kolejka].y1--
                     dane.pills[dane.kolejka].x2--
@@ -174,7 +168,7 @@ function makeRotation(key: string) {
                     dane.pills[dane.kolejka].rotation = 3
                 }
             } else {
-                if (main.tab[y1 + 1][x1].check == 0) {
+                if (main.tab[y1 + 1][x1] == 0) {
                     if (key == "KeyE") {
                         dane.pills[dane.kolejka].y2++
                         dane.pills[dane.kolejka].x2--
@@ -187,7 +181,7 @@ function makeRotation(key: string) {
                 }
             }
         } else {
-            if (main.tab[y1 + 1][x1].check == 0) {
+            if (main.tab[y1 + 1][x1] == 0) {
                 if (key == "KeyE") {
                     dane.pills[dane.kolejka].y2++
                     dane.pills[dane.kolejka].x2--
@@ -202,7 +196,7 @@ function makeRotation(key: string) {
 
     } else if (rotation == 1) {
         if (main.tab[y2][x2 + 1] != undefined) {
-            if (main.tab[y2][x2 + 1].check == 0) {
+            if (main.tab[y2][x2 + 1] == 0) {
                 if (key == "KeyE") {
                     dane.pills[dane.kolejka].x1++
                     dane.pills[dane.kolejka].y1++
@@ -213,7 +207,7 @@ function makeRotation(key: string) {
                     dane.pills[dane.kolejka].rotation--
                 }
             } else {
-                if (main.tab[y2][x2 - 1].check == 0) {
+                if (main.tab[y2][x2 - 1] == 0) {
                     if (key == "KeyE") {
                         dane.pills[dane.kolejka].y1++
                         dane.pills[dane.kolejka].x2--
@@ -226,7 +220,7 @@ function makeRotation(key: string) {
                 }
             }
         } else {
-            if (main.tab[y2][x2 - 1].check == 0) {
+            if (main.tab[y2][x2 - 1] == 0) {
                 if (key == "KeyE") {
                     dane.pills[dane.kolejka].y1++
                     dane.pills[dane.kolejka].x2--
@@ -239,7 +233,7 @@ function makeRotation(key: string) {
             }
         }
     } else if (rotation == 2) {
-        if (main.tab[y2 - 1] != undefined && main.tab[y2 - 1][x2].check == 0) {
+        if (main.tab[y2 - 1] != undefined && main.tab[y2 - 1][x2] == 0) {
             if (key == "KeyE") {
                 dane.pills[dane.kolejka].x1--
                 dane.pills[dane.kolejka].y2--
@@ -252,7 +246,7 @@ function makeRotation(key: string) {
         }
     } else if (rotation == 3) {
         if (main.tab[y1][x1 + 1] != undefined) {
-            if (main.tab[y1][x1 + 1].check == 0) {
+            if (main.tab[y1][x1 + 1] == 0) {
                 if (key == "KeyE") {
                     dane.pills[dane.kolejka].x2++
                     dane.pills[dane.kolejka].y2++
@@ -263,7 +257,7 @@ function makeRotation(key: string) {
                     dane.pills[dane.kolejka].rotation--
                 }
             } else {
-                if (main.tab[y2][x1 - 1].check == 0) {
+                if (main.tab[y2][x1 - 1] == 0) {
                     if (key == "KeyE") {
                         dane.pills[dane.kolejka].y2++
                         dane.pills[dane.kolejka].x1--
@@ -276,7 +270,7 @@ function makeRotation(key: string) {
                 }
             }
         } else {
-            if (main.tab[y2][x1 - 1].check == 0) {
+            if (main.tab[y2][x1 - 1] == 0) {
                 if (key == "KeyE") {
                     dane.pills[dane.kolejka].y2++
                     dane.pills[dane.kolejka].x1--
@@ -290,24 +284,54 @@ function makeRotation(key: string) {
         }
 
     }
-
     render()
 }
 
 function createPill() {
     dane.pills[dane.kolejka].deFlag()
     dane.kolejka++
-    dane.pills[dane.kolejka] = new Pill()
+    dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 }
 
 function checkKill() {
+    render()
     for (let i = 0; i < main.height; i++) {
-        for (let pila = 0; pila < dane.pills.length; pila++) {
+        let poziom = []
+        for (let j = 0; j < main.width; j++) {
 
+            if (poziom.length == 0) {
+                poziom.push(j)
+            }
+
+            if (main.tab[i][j + 1] != undefined && main.tab[i][j + 1] != 0 && main.tab[i][j] == main.tab[i][j + 1]) {
+                poziom.push(j + 1)
+            } else if (poziom.length >= 4) {
+                kill(poziom, i, false)
+            } else {
+                poziom.length = 0
+            }
 
         }
     }
 }
+
+function kill(a: number[], b: number, rev: boolean) {
+    if (!rev) {
+        dane.pills.map((item, i) => {
+            if (b == item.y1 && a.includes(item.x1)) {
+                item.color1 = "white"
+                console.log("Kill: " + item.y1 + "-" + item.x1)
+            }
+            if (b == item.y2 && a.includes(item.x2)) {
+                item.color2 = "white"
+                console.log("Kill: " + item.y2 + "-" + item.x2)
+            }
+        })
+    } else {
+
+    }
+}
+
 
 setInterval(() => {
     gravity()
