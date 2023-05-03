@@ -4,7 +4,7 @@ export class Plansza {
     height: number
     size: number
     plansza: HTMLDivElement
-    tab: number[][]
+    tab: { check: number, color: number }[][]
     constructor(width: number, height: number, size: number) {
         this.width = width
         this.height = height
@@ -26,7 +26,7 @@ export class Plansza {
                 pole.className = "pole"
                 pole.id = i + "|" + j
 
-                this.tab[i][j] = 0
+                this.tab[i][j] = { check: 0, color: 0 }
                 this.plansza.append(pole)
             }
         }
