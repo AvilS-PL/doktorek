@@ -62,15 +62,28 @@ export class Virus {
     x: number
     y: number
     color: string
-    constructor() {
-        this.x = Math.floor(Math.random() * 1)
+    constructor(color: string) {
+        this.x = Math.floor(Math.random() * dane.width)
+        this.y = Math.floor(Math.random() * (dane.height - 3)) + 3
+        this.color = color
     }
 }
 
-export let dane: { kolejka: number, wynik: number, pills: Pill[], width: number, height: number, state: string } = {
+interface Dane {
+    kolejka: number,
+    wynik: number,
+    pills: Pill[],
+    viruses: Virus[],
+    width: number,
+    height: number,
+    state: string
+}
+
+export let dane: Dane = {
     kolejka: 0,
     wynik: 0,
     pills: [],
+    viruses: [],
     width: 6,
     height: 10,
     state: "play"

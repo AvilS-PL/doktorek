@@ -3,6 +3,10 @@ import { rnc } from './functions'
 
 let main = new Plansza(dane.width, dane.height, 40)
 dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
+for (let i = 0; i < 3; i++) {
+    dane.viruses[i] = new Virus(rnc())
+}
+console.log(dane.viruses)
 render()
 
 function render() {
@@ -14,6 +18,20 @@ function render() {
             document.getElementById(i + "|" + j).innerText = "0"
         })
     })
+
+    for (let i = 0; i < dane.viruses.length; i++) {
+        if (dane.viruses[i].color == "red") {
+            main.tab[dane.viruses[i].y][dane.viruses[i].x] = 1
+        } else if (dane.viruses[i].color == "yellow") {
+            main.tab[dane.viruses[i].y][dane.viruses[i].x] = 2
+        } else if (dane.viruses[i].color == "blue") {
+            main.tab[dane.viruses[i].y][dane.viruses[i].x] = 3
+        }
+        if (dane.viruses[i].color != "white") {
+            document.getElementById(dane.viruses[i].y + "|" + dane.viruses[i].x).style.backgroundColor = dane.viruses[i].color
+            document.getElementById(dane.viruses[i].y + "|" + dane.viruses[i].x).innerText = i.toString()
+        }
+    }
 
     for (let i = 0; i < dane.pills.length; i++) {
 
@@ -167,16 +185,18 @@ function spadanie() {
     }
 }
 document.body.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.code == "KeyQ") {
-        makeRotation("KeyQ")
-    } else if (e.code == "KeyE") {
-        makeRotation("KeyE")
-    } else if (e.code == "KeyA") {
-        makeMove("KeyA")
-    } else if (e.code == "KeyD") {
-        makeMove("KeyD")
-    } else if (e.code == "KeyS") {
-        makeMove("KeyS")
+    if (dane.state == "play") {
+        if (e.code == "KeyQ") {
+            makeRotation("KeyQ")
+        } else if (e.code == "KeyE") {
+            makeRotation("KeyE")
+        } else if (e.code == "KeyA") {
+            makeMove("KeyA")
+        } else if (e.code == "KeyD") {
+            makeMove("KeyD")
+        } else if (e.code == "KeyS") {
+            makeMove("KeyS")
+        }
     }
 });
 
@@ -423,6 +443,11 @@ function kill(a: number[], b: number, rev: boolean) {
                 item.color2 = "white"
             }
         })
+        dane.viruses.map((item, i) => {
+            if (b == item.y && a.includes(item.x)) {
+                item.color = "white"
+            }
+        })
     } else {
         dane.pills.map((item, i) => {
             if (b == item.x1 && a.includes(item.y1)) {
@@ -430,6 +455,11 @@ function kill(a: number[], b: number, rev: boolean) {
             }
             if (b == item.x2 && a.includes(item.y2)) {
                 item.color2 = "white"
+            }
+        })
+        dane.viruses.map((item, i) => {
+            if (b == item.x && a.includes(item.y)) {
+                item.color = "white"
             }
         })
     }
