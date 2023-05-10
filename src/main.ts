@@ -1,6 +1,6 @@
 import { Plansza, Pill, Virus, dane } from './assets'
 import { rnc } from './functions'
-
+//test
 let main = new Plansza(dane.width, dane.height, 40)
 dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 for (let i = 0; i < 3; i++) {
