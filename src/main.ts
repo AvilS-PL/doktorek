@@ -1,7 +1,7 @@
 import { Plansza, Pill, Virus, dane } from './assets'
 import { rnc } from './functions'
 
-let main = new Plansza(dane.width, dane.height, 40)
+let main = new Plansza(dane.width, dane.height, 16)
 dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 for (let i = 0; i < 3; i++) {
     dane.viruses[i] = new Virus(rnc())
@@ -20,12 +20,15 @@ function render() {
     main.tab.map((item, i) => {
         item.map((poditem, j) => {
             main.tab[i][j] = 0
-            document.getElementById(i + "|" + j).style.backgroundColor = "white"
-            document.getElementById(i + "|" + j).innerText = "0"
+            let temp = document.getElementById(i + "|" + j)
+            temp.style.backgroundColor = "black"
+            // temp.innerText = ""
+            temp.style.backgroundImage = ""
         })
     })
 
     for (let i = 0; i < dane.viruses.length; i++) {
+        dane.viruses[i].renderVirus()
         if (dane.viruses[i].color == "red") {
             main.tab[dane.viruses[i].y][dane.viruses[i].x] = 1
         } else if (dane.viruses[i].color == "yellow") {
@@ -34,12 +37,13 @@ function render() {
             main.tab[dane.viruses[i].y][dane.viruses[i].x] = 3
         }
         if (dane.viruses[i].color != "white") {
-            document.getElementById(dane.viruses[i].y + "|" + dane.viruses[i].x).style.backgroundColor = dane.viruses[i].color
-            document.getElementById(dane.viruses[i].y + "|" + dane.viruses[i].x).innerText = i.toString()
+            // document.getElementById(dane.viruses[i].y + "|" + dane.viruses[i].x).style.backgroundColor = dane.viruses[i].color
         }
     }
 
     for (let i = 0; i < dane.pills.length; i++) {
+
+        dane.pills[i].renderPill()
 
         if (dane.pills[i].color1 == "red") {
             main.tab[dane.pills[i].y1][dane.pills[i].x1] = 1
@@ -56,16 +60,8 @@ function render() {
         } else if (dane.pills[i].color2 == "blue") {
             main.tab[dane.pills[i].y2][dane.pills[i].x2] = 3
         }
-
-
-        if (dane.pills[i].color1 != "white") {
-            document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).style.backgroundColor = dane.pills[i].color1
-            document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).innerText = i.toString()
-        }
-        if (dane.pills[i].color2 != "white") {
-            document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).style.backgroundColor = dane.pills[i].color2
-            document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).innerText = i.toString()
-        }
+        // document.getElementById(dane.pills[i].y1 + "|" + dane.pills[i].x1).innerText = main.tab[dane.pills[i].y1][dane.pills[i].x1].toString()
+        // document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).innerText = main.tab[dane.pills[i].y2][dane.pills[i].x2].toString()
     }
 
     if (dane.pills[dane.pills.length - 1].flag) {
@@ -485,13 +481,21 @@ function refresh(timestamp: number) {
                 workTick = 0
             }
         } else if (dane.state == "spadanie") {
-            if (workTick % 10 == 0 && workTick != 0) {
+            if (workTick % 5 == 0 && workTick != 0) {
                 spadanie()
                 workTick = 0
             }
         }
 
         workTick++
+        if (tick % 15 == 0 && tick != 0) {
+            if (dane.frame == 1) {
+                dane.frame = 0
+            } else {
+                dane.frame = 1
+            }
+            render()
+        }
 
         if (tick == 60) {
             tick = 0

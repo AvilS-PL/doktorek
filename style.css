@@ -1,6 +1,5 @@
 * {
     margin: 0;
-    box-sizing: border-box;
 }
 
 #plansza {
@@ -10,5 +9,6 @@
 }
 
 .pole {
-    border: 1px solid;
+    background-color: black;
+    image-rendering: pixelated;
 }
