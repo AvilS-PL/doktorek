@@ -5,8 +5,14 @@ let main = new Plansza(dane.width, dane.height, 40)
 dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 for (let i = 0; i < 3; i++) {
     dane.viruses[i] = new Virus(rnc())
+    for (let j = 0; j < dane.viruses.length - 1; j++) {
+        if (dane.viruses[i].x == dane.viruses[j].x && dane.viruses[i].y == dane.viruses[j].y) {
+            dane.viruses[i] = new Virus(rnc())
+            j = 0
+            console.log("pow")
+        }
+    }
 }
-console.log(dane.viruses)
 render()
 
 function render() {
@@ -464,14 +470,51 @@ function kill(a: number[], b: number, rev: boolean) {
         })
     }
 }
+let tick: number = 0
+let workTick: number = 0
+let prevTimestamp: number
+window.requestAnimationFrame(refresh)
+function refresh(timestamp: number) {
+    if (timestamp != prevTimestamp) {
+        prevTimestamp = timestamp
 
+        if (dane.state == "play") {
+            if (workTick % 60 == 0 && workTick != 0) {
+                gravity()
+                render()
+                workTick = 0
+            }
+        } else if (dane.state == "spadanie") {
+            if (workTick % 10 == 0 && workTick != 0) {
+                spadanie()
+                workTick = 0
+            }
+        }
 
-setInterval(() => {
-    if (dane.state == "play") {
-        gravity()
-        render()
-    } else if (dane.state == "spadanie") {
-        spadanie()
+        workTick++
+
+        if (tick == 60) {
+            tick = 0
+        } else {
+            tick++
+        }
     }
 
-}, 1000);
+    window.requestAnimationFrame(refresh)
+}
+
+// setInterval(() => {
+//     if (workTick == 10) {
+//         if (dane.state == "play") {
+//             gravity()
+//             render()
+//         } else if (dane.state == "spadanie") {
+//             spadanie()
+//         }
+//     }
+//     if (workTick == 10) {
+//         workTick = 0
+//     } else {
+//         workTick++
+//     }
+// }, 100);

@@ -64,7 +64,7 @@ export class Virus {
     color: string
     constructor(color: string) {
         this.x = Math.floor(Math.random() * dane.width)
-        this.y = Math.floor(Math.random() * (dane.height - 3)) + 3
+        this.y = Math.floor(Math.random() * (dane.height - 5)) + 5
         this.color = color
     }
 }
@@ -84,7 +84,7 @@ export let dane: Dane = {
     wynik: 0,
     pills: [],
     viruses: [],
-    width: 6,
-    height: 10,
+    width: 8,
+    height: 16,
     state: "play"
 }
