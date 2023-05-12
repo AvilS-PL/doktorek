@@ -1,5 +1,12 @@
 import { Plansza, Pill, Virus, dane } from './assets'
-import { rnc, renderAny } from './functions'
+import { rnc, renderAny, imgLoad } from './functions'
+
+load()
+async function load() {
+    await imgLoad()
+    render()
+    window.requestAnimationFrame(refresh)
+}
 
 let main = new Plansza(dane.width, dane.height, 16)
 dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
@@ -13,9 +20,9 @@ for (let i = 0; i < 3; i++) {
         }
     }
 }
-render()
 
 function render() {
+    renderAny(2382, 0, 640, 384, 0, 0, 640, 384, "main")
 
     main.tab.map((item, i) => {
         item.map((poditem, j) => {
@@ -474,7 +481,6 @@ function kill(a: number[], b: number, rev: boolean) {
 let tick: number = 0
 let workTick: number = 0
 let prevTimestamp: number
-window.requestAnimationFrame(refresh)
 function refresh(timestamp: number) {
     if (timestamp != prevTimestamp) {
         prevTimestamp = timestamp

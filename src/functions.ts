@@ -11,21 +11,27 @@ export function rnc() {
     }
 }
 
+let img = new Image()
+export function imgLoad() {
+    console.log("elo")
+    return new Promise(resolve => {
+        img.src = "img/spritesheet.png"
+        img.onload = () => {
+            resolve("play")
+        }
+    })
 
-export let img = new Image()
-img.src = "img/spritesheet.png"
-img.onload = () => {
-    renderAny(2382, 0, 640, 384, 0, 0, 640, 384)
 }
 
-export function renderAny(x: number, y: number, w: number, h: number, rx: number, ry: number, rw: number, rh: number,) {
-    let test = document.getElementById("test")
+export function renderAny(x: number, y: number, w: number, h: number, rx: number, ry: number, rw: number, rh: number, what: string) {
+    let el = document.getElementById(what)
     let canvas = document.createElement("canvas")
-    canvas.width = w
-    canvas.height = h
+    canvas.width = rw
+    canvas.height = rh
     let ctx = canvas.getContext("2d")
     ctx.drawImage(img, x, y, w, h, rx, ry, rw, rh)
     let url = canvas.toDataURL()
-    test.style.backgroundImage = "url('" + url + "')"
-    document.body.append(canvas)
+    el.style.width = rw + "px"
+    el.style.height = rh + "px"
+    el.style.backgroundImage = "url('" + url + "')"
 }
