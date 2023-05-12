@@ -1,6 +1,8 @@
 import { Plansza, Pill, Virus, dane } from './assets'
 import { rnc, renderAny, imgLoad } from './functions'
 
+
+// Inicjacja gry, planszy, wirusów i pierwszej tabletki + załadoanie spritesheeta
 load()
 async function load() {
     await imgLoad()
@@ -11,7 +13,7 @@ async function load() {
 let main = new Plansza(dane.width, dane.height, 16)
 dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 4; i++) {
     dane.viruses[i] = new Virus(rnc())
     for (let j = 0; j < dane.viruses.length - 1; j++) {
         if (dane.viruses[i].x == dane.viruses[j].x && dane.viruses[i].y == dane.viruses[j].y) {
@@ -21,6 +23,8 @@ for (let i = 0; i < 3; i++) {
     }
 }
 
+
+// Bazowa funcja zbierająca i przetwarzająca dane teoretyczne na tablice i grafiki
 function render() {
     renderAny(2382, 0, 640, 384, 0, 0, 640, 384, "main")
 
@@ -35,7 +39,7 @@ function render() {
     })
 
     for (let i = 0; i < dane.viruses.length; i++) {
-        dane.viruses[i].renderVirus()
+        dane.viruses[i].renderVirus(tick)
         if (dane.viruses[i].color == "red") {
             main.tab[dane.viruses[i].y][dane.viruses[i].x] = 1
         } else if (dane.viruses[i].color == "yellow") {
@@ -78,6 +82,7 @@ function render() {
 
 }
 
+//okresowane opadanie o jeden blok obecnie sterowanej tabletki
 function opadanie() {
     let rotation = dane.pills[dane.kolejka].rotation
     let x1 = dane.pills[dane.kolejka].x1
@@ -122,6 +127,7 @@ function opadanie() {
     }
 }
 
+//grawitacyjne spadanie po zbiciu
 function spadanie() {
     render()
     let zmiana = 0
@@ -195,6 +201,7 @@ function spadanie() {
     }
 }
 
+//obsługa wciskania klawiszy
 document.body.addEventListener("keydown", (e: KeyboardEvent) => {
     if (dane.state == "play") {
         if (e.code == "KeyQ") {
@@ -211,6 +218,7 @@ document.body.addEventListener("keydown", (e: KeyboardEvent) => {
     }
 });
 
+//obsługa ruchu tabletki x, y
 function makeMove(key: string) {
     render()
     let rotation = dane.pills[dane.kolejka].rotation
@@ -255,6 +263,7 @@ function makeMove(key: string) {
     render()
 }
 
+//obsługa bracania tabletki
 function makeRotation(key: string) {
     render()
     let rotation = dane.pills[dane.kolejka].rotation
@@ -395,11 +404,13 @@ function makeRotation(key: string) {
     render()
 }
 
+//stworzenie nowej tabletki i rozpoczącie nowej kolejki
 function createPill() {
     dane.kolejka++
     dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 }
 
+//sprawdzenie czy występuje jakieś zbicie
 function checkKill() {
     render()
     for (let i = 0; i < main.height; i++) {
@@ -444,6 +455,7 @@ function checkKill() {
     }
 }
 
+//usunięcie z planszy rzędów, które uległy zbiciu
 function kill(a: number[], b: number, rev: boolean) {
     if (!rev) {
         dane.pills.map((item, i) => {
@@ -477,7 +489,7 @@ function kill(a: number[], b: number, rev: boolean) {
 }
 
 
-
+//główny mechanizm ticków
 let tick: number = 0
 let workTick: number = 0
 let prevTimestamp: number
@@ -497,17 +509,11 @@ function refresh(timestamp: number) {
                 workTick = 0
             }
         }
-
         workTick++
+
         if (tick % 15 == 0 && tick != 0) {
-            if (dane.frame == 1) {
-                dane.frame = 0
-            } else {
-                dane.frame = 1
-            }
             render()
         }
-
         if (tick == 60) {
             tick = 0
         } else {

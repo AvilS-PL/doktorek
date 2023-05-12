@@ -13,7 +13,6 @@ export function rnc() {
 
 let img = new Image()
 export function imgLoad() {
-    console.log("elo")
     return new Promise(resolve => {
         img.src = "img/spritesheet.png"
         img.onload = () => {

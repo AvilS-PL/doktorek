@@ -1,3 +1,4 @@
+import { renderAny } from "./functions";
 export class Plansza {
     width: number
     height: number
@@ -63,62 +64,63 @@ export class Pill {
     }
 
     renderPill() {
-        let p1 = document.getElementById(this.y1 + "|" + this.x1)
-        let p2 = document.getElementById(this.y2 + "|" + this.x2)
+        let p1 = this.y1 + "|" + this.x1
+        let p2 = this.y2 + "|" + this.x2
+        let p1Y, p1X, p2Y, p2X
         if (this.color1 != "white" && this.color2 != "white") {
-            p1.style.backgroundImage = "url('img/spritesheet.png')"
-            p2.style.backgroundImage = "url('img/spritesheet.png')"
             if (this.color1 == "red") {
-                p1.style.backgroundPositionY = "-32px"
+                p1Y = 32
             } else if (this.color1 == "yellow") {
-                p1.style.backgroundPositionY = "-64px"
+                p1Y = 64
             } else if (this.color1 == "blue") {
-                p1.style.backgroundPositionY = "0px"
+                p1Y = 0
             }
 
             if (this.color2 == "red") {
-                p2.style.backgroundPositionY = "-32px"
+                p2Y = 32
             } else if (this.color2 == "yellow") {
-                p2.style.backgroundPositionY = "-64px"
+                p2Y = 64
             } else if (this.color2 == "blue") {
-                p2.style.backgroundPositionY = "0px"
+                p2Y = -0
             }
 
             if (this.rotation == 0) {
-                p1.style.backgroundPositionX = "-1640px"
-                p2.style.backgroundPositionX = "-1672px"
+                p1X = 1640
+                p2X = 1672
             } else if (this.rotation == 1) {
-                p1.style.backgroundPositionX = "-1688px"
-                p2.style.backgroundPositionX = "-1624px"
+                p1X = 1688
+                p2X = 1624
             } else if (this.rotation == 2) {
-                p1.style.backgroundPositionX = "-1672px"
-                p2.style.backgroundPositionX = "-1640px"
+                p1X = 1672
+                p2X = 1640
             } else if (this.rotation == 3) {
-                p1.style.backgroundPositionX = "-1624px"
-                p2.style.backgroundPositionX = "-1688px"
+                p1X = 1624
+                p2X = 1688
             }
         } else if (this.color1 != "white" && this.color2 == "white") {
-            p1.style.backgroundImage = "url('img/spritesheet.png')"
-            p1.style.backgroundPositionX = "-1608px"
+            p1X = 1608
             if (this.color1 == "red") {
-                p1.style.backgroundPositionY = "-32px"
+                p1Y = 32
             } else if (this.color1 == "yellow") {
-                p1.style.backgroundPositionY = "-64px"
+                p1Y = 64
             } else if (this.color1 == "blue") {
-                p1.style.backgroundPositionY = "0px"
+                p1Y = 0
             }
         } else if (this.color1 == "white" && this.color2 != "white") {
-            p2.style.backgroundImage = "url('img/spritesheet.png')"
-            p2.style.backgroundPositionX = "-1608px"
+            p2X = 1608
             if (this.color2 == "red") {
-                p2.style.backgroundPositionY = "-32px"
+                p2Y = 32
             } else if (this.color2 == "yellow") {
-                p2.style.backgroundPositionY = "-64px"
+                p2Y = 64
             } else if (this.color2 == "blue") {
-                p2.style.backgroundPositionY = "0px"
+                p2Y = 0
             }
         }
 
+        if (this.color1 != "white" || this.color2 != "white") {
+            renderAny(p1X, p1Y, 16, 16, 0, 0, 16, 16, p1)
+            renderAny(p2X, p2Y, 16, 16, 0, 0, 16, 16, p2)
+        }
     }
 }
 
@@ -130,26 +132,27 @@ export class Virus {
         this.x = Math.floor(Math.random() * dane.width)
         this.y = Math.floor(Math.random() * (dane.height - 5)) + 5
         this.color = color
-        this.renderVirus()
     }
 
-    renderVirus() {
-        let p1 = document.getElementById(this.y + "|" + this.x)
+    renderVirus(frame: number) {
+        let p = this.y + "|" + this.x
+        let pX, pY
         if (this.color != "white") {
-            p1.style.backgroundImage = "url('img/spritesheet.png')"
             if (this.color == "red") {
-                p1.style.backgroundPositionX = "-1736px"
+                pX = 1736
             } else if (this.color == "yellow") {
-                p1.style.backgroundPositionX = "-1752px"
+                pX = 1752
             } else if (this.color == "blue") {
-                p1.style.backgroundPositionX = "-1720px"
+                pX = 1720
 
             }
-            if (dane.frame == 1) {
-                p1.style.backgroundPositionY = "-32px"
+            if (frame % 30 == 0 && frame != 0) {
+                pY = 32
             } else {
-                p1.style.backgroundPositionY = "0px"
+                pY = 0
             }
+
+            renderAny(pX, pY, 16, 16, 0, 0, 16, 16, p)
         }
     }
 }
@@ -162,7 +165,7 @@ interface Dane {
     width: number,
     height: number,
     state: string,
-    frame: number
+
 }
 
 export let dane: Dane = {
@@ -173,7 +176,7 @@ export let dane: Dane = {
     width: 8,
     height: 16,
     state: "play",
-    frame: 0
+
 }
 
 interface kordy {
