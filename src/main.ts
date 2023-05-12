@@ -6,7 +6,7 @@ import { rnc, renderAny, imgLoad } from './functions'
 load()
 async function load() {
     await imgLoad()
-    render()
+    update()
     window.requestAnimationFrame(refresh)
 }
 
@@ -24,17 +24,13 @@ for (let i = 0; i < 4; i++) {
 }
 
 
-// Bazowa funcja zbierająca i przetwarzająca dane teoretyczne na tablice i grafiki
-function render() {
+// updateowanie tablicy dancyh
+function update() {
     renderAny(2382, 0, 640, 384, 0, 0, 640, 384, "main")
 
     main.tab.map((item, i) => {
         item.map((poditem, j) => {
             main.tab[i][j] = 0
-            let temp = document.getElementById(i + "|" + j)
-            temp.style.backgroundColor = "black"
-            temp.style.backgroundImage = ""
-            // temp.innerText = ""
         })
     })
 
@@ -80,6 +76,25 @@ function render() {
         main.tab[dane.pills[dane.pills.length - 1].y2][dane.pills[dane.pills.length - 1].x2] = 9
     }
 
+    // console.log("update")
+}
+
+//renderowanie img
+function render() {
+    main.tab.map((item, i) => {
+        item.map((poditem, j) => {
+            let temp = document.getElementById(i + "|" + j)
+            temp.style.backgroundImage = ""
+        })
+    })
+
+    for (let i = 0; i < dane.viruses.length; i++) {
+        dane.viruses[i].renderVirus(tick)
+    }
+
+    for (let i = 0; i < dane.pills.length; i++) {
+        dane.pills[i].renderPill()
+    }
 }
 
 //okresowane opadanie o jeden blok obecnie sterowanej tabletki
@@ -129,7 +144,7 @@ function opadanie() {
 
 //grawitacyjne spadanie po zbiciu
 function spadanie() {
-    render()
+    update()
     let zmiana = 0
     for (let i = main.height - 1; i >= 0; i--) {
         dane.pills.map((item, j) => {
@@ -139,21 +154,21 @@ function spadanie() {
                         if (main.tab[item.y2 + 1] != undefined && main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0 && main.tab[item.y2 + 1][item.x2] == 0) {
                             item.y1++
                             item.y2++
-                            render()
+                            update()
                             zmiana++
                         }
                     } else if (item.color1 == "white" && item.color2 != "white") {
                         if (main.tab[item.y2 + 1] != undefined && main.tab[item.y2 + 1][item.x2] == 0) {
                             item.y1++
                             item.y2++
-                            render()
+                            update()
                             zmiana++
                         }
                     } else if (item.color1 != "white" && item.color2 == "white") {
                         if (main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0) {
                             item.y1++
                             item.y2++
-                            render()
+                            update()
                             zmiana++
                         }
                     }
@@ -162,13 +177,13 @@ function spadanie() {
                         if (main.tab[item.y2 + 1] != undefined && main.tab[item.y2 + 1][item.x2] == 0) {
                             item.y1++
                             item.y2++
-                            render()
+                            update()
                             zmiana++
                         }
                     } else if (item.color1 != "white" && item.color2 == "white") {
                         if (main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0) {
                             item.y1++
-                            render()
+                            update()
                             zmiana++
                         }
                     }
@@ -177,13 +192,13 @@ function spadanie() {
                         if (main.tab[item.y1 + 1] != undefined && main.tab[item.y1 + 1][item.x1] == 0) {
                             item.y1++
                             item.y2++
-                            render()
+                            update()
                             zmiana++
                         }
                     } else if (item.color1 == "white" && item.color2 != "white") {
                         if (main.tab[item.y2 + 1] != undefined && main.tab[item.y2 + 1][item.x2] == 0) {
                             item.y2++
-                            render()
+                            update()
                             zmiana++
                         }
                     }
@@ -197,7 +212,7 @@ function spadanie() {
     }
     if (dane.state == "play") {
         createPill()
-        render()
+        update()
     }
 }
 
@@ -220,7 +235,7 @@ document.body.addEventListener("keydown", (e: KeyboardEvent) => {
 
 //obsługa ruchu tabletki x, y
 function makeMove(key: string) {
-    render()
+    update()
     let rotation = dane.pills[dane.kolejka].rotation
     let x1 = dane.pills[dane.kolejka].x1
     let x2 = dane.pills[dane.kolejka].x2
@@ -260,12 +275,12 @@ function makeMove(key: string) {
         }
     }
 
-    render()
+    update()
 }
 
 //obsługa bracania tabletki
 function makeRotation(key: string) {
-    render()
+    update()
     let rotation = dane.pills[dane.kolejka].rotation
     let x1 = dane.pills[dane.kolejka].x1
     let x2 = dane.pills[dane.kolejka].x2
@@ -401,7 +416,7 @@ function makeRotation(key: string) {
         }
 
     }
-    render()
+    update()
 }
 
 //stworzenie nowej tabletki i rozpoczącie nowej kolejki
@@ -412,7 +427,7 @@ function createPill() {
 
 //sprawdzenie czy występuje jakieś zbicie
 function checkKill() {
-    render()
+    update()
     for (let i = 0; i < main.height; i++) {
         let poziom = []
         for (let j = 0; j < main.width; j++) {
@@ -495,12 +510,13 @@ let workTick: number = 0
 let prevTimestamp: number
 function refresh(timestamp: number) {
     if (timestamp != prevTimestamp) {
+        document.getElementById("fps").innerText = tick.toString()
         prevTimestamp = timestamp
 
         if (dane.state == "play") {
             if (workTick % 60 == 0 && workTick != 0) {
                 opadanie()
-                render()
+                update()
                 workTick = 0
             }
         } else if (dane.state == "spadanie") {
@@ -511,14 +527,13 @@ function refresh(timestamp: number) {
         }
         workTick++
 
-        if (tick % 15 == 0 && tick != 0) {
-            render()
-        }
+
         if (tick == 60) {
             tick = 0
         } else {
             tick++
         }
+        render()
     }
 
     window.requestAnimationFrame(refresh)

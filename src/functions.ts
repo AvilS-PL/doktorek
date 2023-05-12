@@ -23,6 +23,8 @@ export function imgLoad() {
 }
 
 export function renderAny(x: number, y: number, w: number, h: number, rx: number, ry: number, rw: number, rh: number, what: string) {
+
+    // console.log("render")
     let el = document.getElementById(what)
     let canvas = document.createElement("canvas")
     canvas.width = rw

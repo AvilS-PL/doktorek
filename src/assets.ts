@@ -97,6 +97,8 @@ export class Pill {
                 p1X = 1624
                 p2X = 1688
             }
+            renderAny(p1X, p1Y, 16, 16, 0, 0, 16, 16, p1)
+            renderAny(p2X, p2Y, 16, 16, 0, 0, 16, 16, p2)
         } else if (this.color1 != "white" && this.color2 == "white") {
             p1X = 1608
             if (this.color1 == "red") {
@@ -106,6 +108,7 @@ export class Pill {
             } else if (this.color1 == "blue") {
                 p1Y = 0
             }
+            renderAny(p1X, p1Y, 16, 16, 0, 0, 16, 16, p1)
         } else if (this.color1 == "white" && this.color2 != "white") {
             p2X = 1608
             if (this.color2 == "red") {
@@ -115,10 +118,6 @@ export class Pill {
             } else if (this.color2 == "blue") {
                 p2Y = 0
             }
-        }
-
-        if (this.color1 != "white" || this.color2 != "white") {
-            renderAny(p1X, p1Y, 16, 16, 0, 0, 16, 16, p1)
             renderAny(p2X, p2Y, 16, 16, 0, 0, 16, 16, p2)
         }
     }
@@ -146,7 +145,7 @@ export class Virus {
                 pX = 1720
 
             }
-            if (frame % 30 == 0 && frame != 0) {
+            if (frame <= 30) {
                 pY = 32
             } else {
                 pY = 0
@@ -184,12 +183,12 @@ interface kordy {
     y: number
 }
 
-interface Anim {
-    virusesFrames: kordy[],
-    virusesTimes: number[]
-}
+// interface Anim {
+//     virusesFrames: kordy[],
+//     virusesTimes: number[]
+// }
 
-export let animations: Anim = {
-    virusesFrames: [{ x: 1704, y: 0 },],
-    virusesTimes: [30, 30]
-}
+// export let animations: Anim = {
+//     virusesFrames: [{ x: 1704, y: 0 },],
+//     virusesTimes: [30, 30]
+// }
