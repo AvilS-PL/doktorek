@@ -27,6 +27,10 @@ export class Plansza {
 
                 this.tab[i][j] = 0
                 this.plansza.append(pole)
+
+                this.plansza.style.position = "absolute"
+                this.plansza.style.left = "272px"
+                this.plansza.style.top = "98px"
             }
         }
         document.body.append(this.plansza)

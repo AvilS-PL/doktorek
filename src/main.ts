@@ -29,8 +29,8 @@ function render() {
             main.tab[i][j] = 0
             let temp = document.getElementById(i + "|" + j)
             temp.style.backgroundColor = "black"
-            // temp.innerText = ""
             temp.style.backgroundImage = ""
+            // temp.innerText = ""
         })
     })
 
