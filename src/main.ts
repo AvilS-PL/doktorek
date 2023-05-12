@@ -1,15 +1,15 @@
 import { Plansza, Pill, Virus, dane } from './assets'
-import { rnc } from './functions'
+import { rnc, renderAny } from './functions'
 
 let main = new Plansza(dane.width, dane.height, 16)
 dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
+
 for (let i = 0; i < 3; i++) {
     dane.viruses[i] = new Virus(rnc())
     for (let j = 0; j < dane.viruses.length - 1; j++) {
         if (dane.viruses[i].x == dane.viruses[j].x && dane.viruses[i].y == dane.viruses[j].y) {
             dane.viruses[i] = new Virus(rnc())
             j = 0
-            console.log("pow")
         }
     }
 }
@@ -71,7 +71,7 @@ function render() {
 
 }
 
-function gravity() {
+function opadanie() {
     let rotation = dane.pills[dane.kolejka].rotation
     let x1 = dane.pills[dane.kolejka].x1
     let x2 = dane.pills[dane.kolejka].x2
@@ -114,6 +114,7 @@ function gravity() {
         }
     }
 }
+
 function spadanie() {
     render()
     let zmiana = 0
@@ -186,6 +187,7 @@ function spadanie() {
         render()
     }
 }
+
 document.body.addEventListener("keydown", (e: KeyboardEvent) => {
     if (dane.state == "play") {
         if (e.code == "KeyQ") {
@@ -466,6 +468,9 @@ function kill(a: number[], b: number, rev: boolean) {
         })
     }
 }
+
+
+
 let tick: number = 0
 let workTick: number = 0
 let prevTimestamp: number
@@ -476,7 +481,7 @@ function refresh(timestamp: number) {
 
         if (dane.state == "play") {
             if (workTick % 60 == 0 && workTick != 0) {
-                gravity()
+                opadanie()
                 render()
                 workTick = 0
             }
@@ -506,19 +511,3 @@ function refresh(timestamp: number) {
 
     window.requestAnimationFrame(refresh)
 }
-
-// setInterval(() => {
-//     if (workTick == 10) {
-//         if (dane.state == "play") {
-//             gravity()
-//             render()
-//         } else if (dane.state == "spadanie") {
-//             spadanie()
-//         }
-//     }
-//     if (workTick == 10) {
-//         workTick = 0
-//     } else {
-//         workTick++
-//     }
-// }, 100);
