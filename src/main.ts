@@ -508,9 +508,10 @@ function kill(a: number[], b: number, rev: boolean) {
 let tick: number = 0
 let workTick: number = 0
 let prevTimestamp: number
+let fpsCh = new Date().getTime()
+let oldFps = fpsCh
 function refresh(timestamp: number) {
     if (timestamp != prevTimestamp) {
-        document.getElementById("fps").innerText = tick.toString()
         prevTimestamp = timestamp
 
         if (dane.state == "play") {
@@ -530,6 +531,10 @@ function refresh(timestamp: number) {
 
         if (tick == 60) {
             tick = 0
+            document.getElementById("fps").innerText = Math.floor(60000 / (fpsCh - oldFps)).toString()
+            oldFps = fpsCh
+            fpsCh = new Date().getTime()
+
         } else {
             tick++
         }
