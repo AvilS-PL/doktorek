@@ -64,62 +64,62 @@ export class Pill {
     }
 
     renderPill() {
-        let p1 = this.y1 + "|" + this.x1
-        let p2 = this.y2 + "|" + this.x2
-        let p1Y, p1X, p2Y, p2X
+        let p1 = document.getElementById(this.y1 + "|" + this.x1)
+        let p2 = document.getElementById(this.y2 + "|" + this.x2)
         if (this.color1 != "white" && this.color2 != "white") {
+            p1.style.backgroundImage = "url('img/spritesheet.png')"
+            p2.style.backgroundImage = "url('img/spritesheet.png')"
             if (this.color1 == "red") {
-                p1Y = 32
+                p1.style.backgroundPositionY = "-32px"
             } else if (this.color1 == "yellow") {
-                p1Y = 64
+                p1.style.backgroundPositionY = "-64px"
             } else if (this.color1 == "blue") {
-                p1Y = 0
+                p1.style.backgroundPositionY = "0px"
             }
 
             if (this.color2 == "red") {
-                p2Y = 32
+                p2.style.backgroundPositionY = "-32px"
             } else if (this.color2 == "yellow") {
-                p2Y = 64
+                p2.style.backgroundPositionY = "-64px"
             } else if (this.color2 == "blue") {
-                p2Y = -0
+                p2.style.backgroundPositionY = "0px"
             }
 
             if (this.rotation == 0) {
-                p1X = 1640
-                p2X = 1672
+                p1.style.backgroundPositionX = "-1640px"
+                p2.style.backgroundPositionX = "-1672px"
             } else if (this.rotation == 1) {
-                p1X = 1688
-                p2X = 1624
+                p1.style.backgroundPositionX = "-1688px"
+                p2.style.backgroundPositionX = "-1624px"
             } else if (this.rotation == 2) {
-                p1X = 1672
-                p2X = 1640
+                p1.style.backgroundPositionX = "-1672px"
+                p2.style.backgroundPositionX = "-1640px"
             } else if (this.rotation == 3) {
-                p1X = 1624
-                p2X = 1688
+                p1.style.backgroundPositionX = "-1624px"
+                p2.style.backgroundPositionX = "-1688px"
             }
-            renderAny(p1X, p1Y, 16, 16, 0, 0, 16, 16, p1)
-            renderAny(p2X, p2Y, 16, 16, 0, 0, 16, 16, p2)
         } else if (this.color1 != "white" && this.color2 == "white") {
-            p1X = 1608
+            p1.style.backgroundImage = "url('img/spritesheet.png')"
+            p1.style.backgroundPositionX = "-1608px"
             if (this.color1 == "red") {
-                p1Y = 32
+                p1.style.backgroundPositionY = "-32px"
             } else if (this.color1 == "yellow") {
-                p1Y = 64
+                p1.style.backgroundPositionY = "-64px"
             } else if (this.color1 == "blue") {
-                p1Y = 0
+                p1.style.backgroundPositionY = "0px"
             }
-            renderAny(p1X, p1Y, 16, 16, 0, 0, 16, 16, p1)
         } else if (this.color1 == "white" && this.color2 != "white") {
-            p2X = 1608
+            p2.style.backgroundImage = "url('img/spritesheet.png')"
+            p2.style.backgroundPositionX = "-1608px"
             if (this.color2 == "red") {
-                p2Y = 32
+                p2.style.backgroundPositionY = "-32px"
             } else if (this.color2 == "yellow") {
-                p2Y = 64
+                p2.style.backgroundPositionY = "-64px"
             } else if (this.color2 == "blue") {
-                p2Y = 0
+                p2.style.backgroundPositionY = "0px"
             }
-            renderAny(p2X, p2Y, 16, 16, 0, 0, 16, 16, p2)
         }
+
     }
 }
 
@@ -134,24 +134,22 @@ export class Virus {
     }
 
     renderVirus(frame: number) {
-        let p = this.y + "|" + this.x
-        let pX, pY
+        let p1 = document.getElementById(this.y + "|" + this.x)
         if (this.color != "white") {
+            p1.style.backgroundImage = "url('img/spritesheet.png')"
             if (this.color == "red") {
-                pX = 1736
+                p1.style.backgroundPositionX = "-1736px"
             } else if (this.color == "yellow") {
-                pX = 1752
+                p1.style.backgroundPositionX = "-1752px"
             } else if (this.color == "blue") {
-                pX = 1720
-
+                p1.style.backgroundPositionX = "-1720px"
             }
             if (frame <= 30) {
-                pY = 32
+                p1.style.backgroundPositionY = "-32px"
             } else {
-                pY = 0
+                p1.style.backgroundPositionY = "0px"
             }
 
-            renderAny(pX, pY, 16, 16, 0, 0, 16, 16, p)
         }
     }
 }
