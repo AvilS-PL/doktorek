@@ -14,7 +14,7 @@ let main = new Plansza(dane.width, dane.height, 16)
 dane.pill = new Pill(rnc(), rnc())
 // dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 1; i++) {
     dane.viruses[i] = new Virus(rnc())
     for (let j = 0; j < dane.viruses.length - 1; j++) {
         if (dane.viruses[i].x == dane.viruses[j].x && dane.viruses[i].y == dane.viruses[j].y) {
@@ -81,14 +81,13 @@ function update() {
 //renderowanie img
 function render() {
     renderAny({ x: 2382, y: 0, w: 640, h: 384, rx: 0, ry: 0, rw: 640, rh: 384 }, "main")
-    renderAny(animations.armFrames[animations.armFrame], "main2")
+
     main.tab.map((item, i) => {
         item.map((poditem, j) => {
             let temp = document.getElementById(i + "|" + j)
             temp.style.backgroundImage = ""
         })
     })
-
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 12; j++) {
             let pole = document.getElementById((100 + i) + "|" + (100 + j))
@@ -103,7 +102,18 @@ function render() {
         dane.pills[i].renderPill()
     }
 
-    dane.pill.renderPill()
+    if (dane.state == "gameover") {
+        renderAny({ x: 1880, y: 0, w: 168, h: 167, rx: 474, ry: 48, rw: 120, rh: 112 }, "doktor")
+        renderAny({ x: 2048, y: 0, w: 334, h: 119, rx: 234, ry: 120, rw: 200, rh: 80 }, "endgame")
+    } else if (dane.state == "gamewin") {
+        renderAny({ x: 3022, y: 0, w: 423, h: 119, rx: 208, ry: 120, rw: 250, rh: 80 }, "endgame")
+        dane.pill.renderPill()
+        renderAny(animations.armFrames[animations.armFrame], "arm")
+
+    } else {
+        dane.pill.renderPill()
+        renderAny(animations.armFrames[animations.armFrame], "arm")
+    }
 
 }
 
@@ -442,12 +452,10 @@ function createPill() {
         }
     }
 
-    if (main.tab[0][(dane.width / 2) - 1] != 0 || main.tab[0][(dane.width / 2)] != 0) {
+    if ((main.tab[0][(dane.width / 2) - 1] != 0 || main.tab[0][(dane.width / 2)] != 0) && dane.state) {
         dane.state = "gameover"
-        window.alert("gameover")
     } else if (tempCheck == 0) {
         dane.state = "gamewin"
-        window.alert("gamewin")
     } else {
         dane.kolejka++
         dane.state = "animacja"
@@ -548,6 +556,7 @@ let oldFps = fpsCh
 function refresh(timestamp: number) {
     if (timestamp != prevTimestamp) {
         prevTimestamp = timestamp
+        render()
 
         if (dane.state == "play") {
             if (workTick % 40 == 0 && workTick != 0) {
@@ -622,7 +631,6 @@ function refresh(timestamp: number) {
         } else {
             tick++
         }
-        render()
     }
 
     window.requestAnimationFrame(refresh)
