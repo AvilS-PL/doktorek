@@ -26,7 +26,6 @@ for (let i = 0; i < 4; i++) {
 
 // updateowanie tablicy dancyh
 function update() {
-    renderAny(2382, 0, 640, 384, 0, 0, 640, 384, "main")
 
     main.tab.map((item, i) => {
         item.map((poditem, j) => {
@@ -81,6 +80,7 @@ function update() {
 
 //renderowanie img
 function render() {
+    renderAny(2382, 0, 640, 384, 0, 0, 640, 384, "main")
     main.tab.map((item, i) => {
         item.map((poditem, j) => {
             let temp = document.getElementById(i + "|" + j)
@@ -271,6 +271,9 @@ function makeMove(key: string) {
             if ((main.tab[y1 + 1][x1] == 0 || main.tab[y1 + 1][x1] == 9) && (main.tab[y2 + 1][x2] == 0 || main.tab[y2 + 1][x2] == 9)) {
                 dane.pills[dane.kolejka].y1++
                 dane.pills[dane.kolejka].y2++
+                workTick = 0
+            } else if (workTick < 30) {
+                workTick = 30
             }
         }
     }
@@ -441,7 +444,7 @@ function checkKill() {
             } else if (poziom.length >= 4) {
                 kill(poziom, i, false)
                 poziom.length = 0
-                dane.state = "spadanie"
+                dane.state = "kill"
             } else {
                 poziom.length = 0
             }
@@ -461,7 +464,7 @@ function checkKill() {
             } else if (pion.length >= 4) {
                 kill(pion, i, true)
                 pion.length = 0
-                dane.state = "spadanie"
+                dane.state = "kill"
             } else {
                 pion.length = 0
             }
@@ -475,28 +478,34 @@ function kill(a: number[], b: number, rev: boolean) {
     if (!rev) {
         dane.pills.map((item, i) => {
             if (b == item.y1 && a.includes(item.x1)) {
+                item.zbicie1 = item.color1
                 item.color1 = "white"
             }
             if (b == item.y2 && a.includes(item.x2)) {
+                item.zbicie2 = item.color2
                 item.color2 = "white"
             }
         })
         dane.viruses.map((item, i) => {
             if (b == item.y && a.includes(item.x)) {
+                item.zbicie = item.color
                 item.color = "white"
             }
         })
     } else {
         dane.pills.map((item, i) => {
             if (b == item.x1 && a.includes(item.y1)) {
+                item.zbicie1 = item.color1
                 item.color1 = "white"
             }
             if (b == item.x2 && a.includes(item.y2)) {
+                item.zbicie2 = item.color2
                 item.color2 = "white"
             }
         })
         dane.viruses.map((item, i) => {
             if (b == item.x && a.includes(item.y)) {
+                item.zbicie = item.color
                 item.color = "white"
             }
         })
@@ -515,19 +524,36 @@ function refresh(timestamp: number) {
         prevTimestamp = timestamp
 
         if (dane.state == "play") {
-            if (workTick % 60 == 0 && workTick != 0) {
+            if (workTick % 40 == 0 && workTick != 0) {
                 opadanie()
                 update()
                 workTick = 0
             }
         } else if (dane.state == "spadanie") {
-            if (workTick % 5 == 0 && workTick != 0) {
+            if (workTick % 4 == 0 && workTick != 0) {
                 spadanie()
                 workTick = 0
             }
+        } else if (dane.state == "kill") {
+            if (workTick % 8 == 0 && workTick != 0) {
+                update()
+                workTick = 0
+                dane.state = "spadanie"
+                dane.pills.map((item, i) => {
+                    item.zbicie1 = "white"
+                    item.zbicie2 = "white"
+                })
+                dane.viruses.map((item, i) => {
+                    item.zbicie = "white"
+                })
+            }
         }
-        workTick++
 
+        if (workTick == 60) {
+            workTick = 0
+        } else {
+            workTick++
+        }
 
         if (tick == 60) {
             tick = 0

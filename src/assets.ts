@@ -48,6 +48,8 @@ export class Pill {
     color2: string
     rotation: number
     flag: boolean
+    zbicie1: string
+    zbicie2: string
     constructor(color1: string, color2: string) {
         this.x1 = Math.floor((dane.width / 2) - 1)
         this.y1 = 0
@@ -57,6 +59,8 @@ export class Pill {
         this.color2 = color2
         this.rotation = 0
         this.flag = true
+        this.zbicie1 = "white"
+        this.zbicie2 = "white"
     }
 
     deFlag() {
@@ -99,6 +103,17 @@ export class Pill {
                 p2.style.backgroundPositionX = "-1688px"
             }
         } else if (this.color1 != "white" && this.color2 == "white") {
+            if (dane.state == "kill" && this.zbicie2 != "white") {
+                p2.style.backgroundImage = "url('img/spritesheet.png')"
+                p2.style.backgroundPositionX = "-1656px"
+                if (this.zbicie2 == "red") {
+                    p2.style.backgroundPositionY = "-32px"
+                } else if (this.zbicie2 == "yellow") {
+                    p2.style.backgroundPositionY = "-64px"
+                } else if (this.zbicie2 == "blue") {
+                    p2.style.backgroundPositionY = "0px"
+                }
+            }
             p1.style.backgroundImage = "url('img/spritesheet.png')"
             p1.style.backgroundPositionX = "-1608px"
             if (this.color1 == "red") {
@@ -108,7 +123,20 @@ export class Pill {
             } else if (this.color1 == "blue") {
                 p1.style.backgroundPositionY = "0px"
             }
+
         } else if (this.color1 == "white" && this.color2 != "white") {
+            if (dane.state == "kill" && this.zbicie1 != "white") {
+                console.log("zbicie1")
+                p1.style.backgroundImage = "url('img/spritesheet.png')"
+                p1.style.backgroundPositionX = "-1656px"
+                if (this.zbicie1 == "red") {
+                    p1.style.backgroundPositionY = "-32px"
+                } else if (this.zbicie1 == "yellow") {
+                    p1.style.backgroundPositionY = "-64px"
+                } else if (this.zbicie1 == "blue") {
+                    p1.style.backgroundPositionY = "0px"
+                }
+            }
             p2.style.backgroundImage = "url('img/spritesheet.png')"
             p2.style.backgroundPositionX = "-1608px"
             if (this.color2 == "red") {
@@ -117,6 +145,30 @@ export class Pill {
                 p2.style.backgroundPositionY = "-64px"
             } else if (this.color2 == "blue") {
                 p2.style.backgroundPositionY = "0px"
+            }
+        } else if (this.color1 == "white" && this.color2 == "white") {
+            if (dane.state == "kill" && this.zbicie2 != "white") {
+                p2.style.backgroundImage = "url('img/spritesheet.png')"
+                p2.style.backgroundPositionX = "-1656px"
+                if (this.zbicie2 == "red") {
+                    p2.style.backgroundPositionY = "-32px"
+                } else if (this.zbicie2 == "yellow") {
+                    p2.style.backgroundPositionY = "-64px"
+                } else if (this.zbicie2 == "blue") {
+                    p2.style.backgroundPositionY = "0px"
+                }
+            }
+            if (dane.state == "kill" && this.zbicie1 != "white") {
+                console.log("zbicie1")
+                p1.style.backgroundImage = "url('img/spritesheet.png')"
+                p1.style.backgroundPositionX = "-1656px"
+                if (this.zbicie1 == "red") {
+                    p1.style.backgroundPositionY = "-32px"
+                } else if (this.zbicie1 == "yellow") {
+                    p1.style.backgroundPositionY = "-64px"
+                } else if (this.zbicie1 == "blue") {
+                    p1.style.backgroundPositionY = "0px"
+                }
             }
         }
 
@@ -127,10 +179,12 @@ export class Virus {
     x: number
     y: number
     color: string
+    zbicie: string
     constructor(color: string) {
         this.x = Math.floor(Math.random() * dane.width)
         this.y = Math.floor(Math.random() * (dane.height - 5)) + 5
         this.color = color
+        this.zbicie = "white"
     }
 
     renderVirus(frame: number) {
@@ -149,7 +203,17 @@ export class Virus {
             } else {
                 p1.style.backgroundPositionY = "0px"
             }
-
+        }
+        if (dane.state == "kill" && this.zbicie != "white") {
+            p1.style.backgroundImage = "url('img/spritesheet.png')"
+            p1.style.backgroundPositionX = "-1704px"
+            if (this.zbicie == "red") {
+                p1.style.backgroundPositionY = "-32px"
+            } else if (this.zbicie == "yellow") {
+                p1.style.backgroundPositionY = "-64px"
+            } else if (this.zbicie == "blue") {
+                p1.style.backgroundPositionY = "0px"
+            }
         }
     }
 }
