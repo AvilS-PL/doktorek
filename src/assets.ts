@@ -113,20 +113,38 @@ export class Pill {
                 } else if (this.zbicie2 == "blue") {
                     p2.style.backgroundPositionY = "0px"
                 }
-            }
-            p1.style.backgroundImage = "url('img/spritesheet.png')"
-            p1.style.backgroundPositionX = "-1608px"
-            if (this.color1 == "red") {
-                p1.style.backgroundPositionY = "-32px"
-            } else if (this.color1 == "yellow") {
-                p1.style.backgroundPositionY = "-64px"
-            } else if (this.color1 == "blue") {
-                p1.style.backgroundPositionY = "0px"
+
+                p1.style.backgroundImage = "url('img/spritesheet.png')"
+                if (this.color1 == "red") {
+                    p1.style.backgroundPositionY = "-32px"
+                } else if (this.color1 == "yellow") {
+                    p1.style.backgroundPositionY = "-64px"
+                } else if (this.color1 == "blue") {
+                    p1.style.backgroundPositionY = "0px"
+                }
+                if (this.rotation == 0) {
+                    p1.style.backgroundPositionX = "-1640px"
+                } else if (this.rotation == 1) {
+                    p1.style.backgroundPositionX = "-1688px"
+                } else if (this.rotation == 2) {
+                    p1.style.backgroundPositionX = "-1672px"
+                } else if (this.rotation == 3) {
+                    p1.style.backgroundPositionX = "-1624px"
+                }
+            } else {
+                p1.style.backgroundImage = "url('img/spritesheet.png')"
+                p1.style.backgroundPositionX = "-1608px"
+                if (this.color1 == "red") {
+                    p1.style.backgroundPositionY = "-32px"
+                } else if (this.color1 == "yellow") {
+                    p1.style.backgroundPositionY = "-64px"
+                } else if (this.color1 == "blue") {
+                    p1.style.backgroundPositionY = "0px"
+                }
             }
 
         } else if (this.color1 == "white" && this.color2 != "white") {
             if (dane.state == "kill" && this.zbicie1 != "white") {
-                console.log("zbicie1")
                 p1.style.backgroundImage = "url('img/spritesheet.png')"
                 p1.style.backgroundPositionX = "-1656px"
                 if (this.zbicie1 == "red") {
@@ -136,15 +154,35 @@ export class Pill {
                 } else if (this.zbicie1 == "blue") {
                     p1.style.backgroundPositionY = "0px"
                 }
-            }
-            p2.style.backgroundImage = "url('img/spritesheet.png')"
-            p2.style.backgroundPositionX = "-1608px"
-            if (this.color2 == "red") {
-                p2.style.backgroundPositionY = "-32px"
-            } else if (this.color2 == "yellow") {
-                p2.style.backgroundPositionY = "-64px"
-            } else if (this.color2 == "blue") {
-                p2.style.backgroundPositionY = "0px"
+
+                p2.style.backgroundImage = "url('img/spritesheet.png')"
+                if (this.color2 == "red") {
+                    p2.style.backgroundPositionY = "-32px"
+                } else if (this.color2 == "yellow") {
+                    p2.style.backgroundPositionY = "-64px"
+                } else if (this.color2 == "blue") {
+                    p2.style.backgroundPositionY = "0px"
+                }
+
+                if (this.rotation == 0) {
+                    p2.style.backgroundPositionX = "-1672px"
+                } else if (this.rotation == 1) {
+                    p2.style.backgroundPositionX = "-1624px"
+                } else if (this.rotation == 2) {
+                    p2.style.backgroundPositionX = "-1640px"
+                } else if (this.rotation == 3) {
+                    p2.style.backgroundPositionX = "-1688px"
+                }
+            } else {
+                p2.style.backgroundImage = "url('img/spritesheet.png')"
+                p2.style.backgroundPositionX = "-1608px"
+                if (this.color2 == "red") {
+                    p2.style.backgroundPositionY = "-32px"
+                } else if (this.color2 == "yellow") {
+                    p2.style.backgroundPositionY = "-64px"
+                } else if (this.color2 == "blue") {
+                    p2.style.backgroundPositionY = "0px"
+                }
             }
         } else if (this.color1 == "white" && this.color2 == "white") {
             if (dane.state == "kill" && this.zbicie2 != "white") {
@@ -159,7 +197,6 @@ export class Pill {
                 }
             }
             if (dane.state == "kill" && this.zbicie1 != "white") {
-                console.log("zbicie1")
                 p1.style.backgroundImage = "url('img/spritesheet.png')"
                 p1.style.backgroundPositionX = "-1656px"
                 if (this.zbicie1 == "red") {

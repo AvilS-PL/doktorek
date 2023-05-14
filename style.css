@@ -10,7 +10,7 @@
 
 .pole {
     background-color: black;
-    /* image-rendering: pixelated; */
+    image-rendering: pixelated;
 }
 
 #main {

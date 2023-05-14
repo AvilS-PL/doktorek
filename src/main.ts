@@ -424,8 +424,24 @@ function makeRotation(key: string) {
 
 //stworzenie nowej tabletki i rozpoczącie nowej kolejki
 function createPill() {
-    dane.kolejka++
-    dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
+
+    let tempCheck: number = 0
+    for (let i = 0; i < dane.viruses.length; i++) {
+        if (dane.viruses[i].color != "white") {
+            tempCheck++
+        }
+    }
+
+    if (main.tab[0][(dane.width / 2) - 1] != 0 || main.tab[0][(dane.width / 2)] != 0) {
+        dane.state = "gameover"
+        window.alert("gameover")
+    } else if (tempCheck == 0) {
+        dane.state = "gamewin"
+        window.alert("gamewin")
+    } else {
+        dane.kolejka++
+        dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
+    }
 }
 
 //sprawdzenie czy występuje jakieś zbicie
