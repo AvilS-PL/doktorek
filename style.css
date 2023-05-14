@@ -8,10 +8,21 @@
     flex-wrap: wrap;
 }
 
+#pillPlansza {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 .pole {
     background-color: black;
     image-rendering: pixelated;
 }
+
+.pole2 {
+    image-rendering: pixelated;
+}
+
 
 #main {
     position: absolute;
@@ -19,7 +30,23 @@
     top: 0;
 }
 
+#main2 {
+    position: absolute;
+    left: 0;
+    top: 500px;
+}
+
 #fps {
     position: absolute;
     top: 390px
+}
+
+#pre1 {
+    position: absolute;
+    background-color: red;
+}
+
+#pre2 {
+    position: absolute;
+    background-color: red;
 }

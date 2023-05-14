@@ -1,4 +1,4 @@
-import { Plansza, Pill, Virus, dane } from './assets'
+import { Plansza, Pill, Virus, dane, animations } from './assets'
 import { rnc, renderAny, imgLoad } from './functions'
 
 
@@ -11,7 +11,8 @@ async function load() {
 }
 
 let main = new Plansza(dane.width, dane.height, 16)
-dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
+dane.pill = new Pill(rnc(), rnc())
+// dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 
 for (let i = 0; i < 4; i++) {
     dane.viruses[i] = new Virus(rnc())
@@ -22,7 +23,6 @@ for (let i = 0; i < 4; i++) {
         }
     }
 }
-
 
 // updateowanie tablicy dancyh
 function update() {
@@ -70,7 +70,7 @@ function update() {
         // document.getElementById(dane.pills[i].y2 + "|" + dane.pills[i].x2).innerText = main.tab[dane.pills[i].y2][dane.pills[i].x2].toString()
     }
 
-    if (dane.pills[dane.pills.length - 1].flag) {
+    if (dane.pills.length > 0 && dane.pills[dane.pills.length - 1].flag) {
         main.tab[dane.pills[dane.pills.length - 1].y1][dane.pills[dane.pills.length - 1].x1] = 9
         main.tab[dane.pills[dane.pills.length - 1].y2][dane.pills[dane.pills.length - 1].x2] = 9
     }
@@ -80,7 +80,8 @@ function update() {
 
 //renderowanie img
 function render() {
-    renderAny(2382, 0, 640, 384, 0, 0, 640, 384, "main")
+    renderAny({ x: 2382, y: 0, w: 640, h: 384, rx: 0, ry: 0, rw: 640, rh: 384 }, "main")
+    renderAny(animations.armFrames[animations.armFrame], "main2")
     main.tab.map((item, i) => {
         item.map((poditem, j) => {
             let temp = document.getElementById(i + "|" + j)
@@ -88,6 +89,12 @@ function render() {
         })
     })
 
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 12; j++) {
+            let pole = document.getElementById((100 + i) + "|" + (100 + j))
+            pole.style.backgroundImage = ""
+        }
+    }
     for (let i = 0; i < dane.viruses.length; i++) {
         dane.viruses[i].renderVirus(tick)
     }
@@ -95,6 +102,9 @@ function render() {
     for (let i = 0; i < dane.pills.length; i++) {
         dane.pills[i].renderPill()
     }
+
+    dane.pill.renderPill()
+
 }
 
 //okresowane opadanie o jeden blok obecnie sterowanej tabletki
@@ -440,7 +450,7 @@ function createPill() {
         window.alert("gamewin")
     } else {
         dane.kolejka++
-        dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
+        dane.state = "animacja"
     }
 }
 
@@ -562,6 +572,38 @@ function refresh(timestamp: number) {
                 dane.viruses.map((item, i) => {
                     item.zbicie = "white"
                 })
+            }
+        }
+        else if (dane.state == "animacja") {
+            if (workTick % 1 == 0 && workTick != 0) {
+                dane.pill.x1 = animations.pillFrames[animations.pillFrame].x1
+                dane.pill.y1 = animations.pillFrames[animations.pillFrame].y1
+                dane.pill.x2 = animations.pillFrames[animations.pillFrame].x2
+                dane.pill.y2 = animations.pillFrames[animations.pillFrame].y2
+                dane.pill.rotation = animations.pillFrames[animations.pillFrame].rotation
+
+
+                if (animations.pillFrame == 0) {
+                    animations.armFrame = 0
+                } else if (animations.pillFrame == 5) {
+                    animations.armFrame = 1
+                } else if (animations.pillFrame == 8) {
+                    animations.armFrame = 2
+                }
+                animations.pillFrame++
+            }
+            if (animations.pillFrame == animations.pillFrames.length) {
+                dane.state = "play"
+                animations.pillFrame = 0
+                animations.armFrame = 0
+
+                dane.pill.x1 = 3
+                dane.pill.y1 = 0
+                dane.pill.x2 = 4
+                dane.pill.y2 = 0
+                dane.pill.Flag()
+                dane.pills.push(dane.pill)
+                dane.pill = new Pill(rnc(), rnc())
             }
         }
 

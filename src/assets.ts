@@ -1,9 +1,9 @@
-import { renderAny } from "./functions";
 export class Plansza {
     width: number
     height: number
     size: number
     plansza: HTMLDivElement
+    pillPlansza: HTMLElement
     tab: number[][]
     constructor(width: number, height: number, size: number) {
         this.width = width
@@ -13,7 +13,12 @@ export class Plansza {
         this.plansza = document.createElement("div")
         this.plansza.id = "plansza"
         this.plansza.style.width = this.size * width + "px"
+
+        this.pillPlansza = document.createElement("div")
+        this.pillPlansza.id = "pillPlansza"
+        this.pillPlansza.style.width = this.size * 12 + "px"
         this.generateMap()
+        this.generatePillMap()
     }
 
     generateMap() {
@@ -34,7 +39,38 @@ export class Plansza {
                 this.plansza.style.top = "98px"
             }
         }
+        // let pre1 = document.createElement("div")
+        // pre1.id = "pre1"
+        // pre1.style.width = this.size + "px"
+        // pre1.style.height = this.size + "px"
+        // pre1.style.left = "480px"
+        // pre1.style.top = "48px"
+        // let pre2 = document.createElement("div")
+        // pre2.id = "pre2"
+        // pre2.style.width = this.size + "px"
+        // pre2.style.height = this.size + "px"
+        // pre1.style.left = "480px"
+        // pre1.style.top = "48px"
         document.body.append(this.plansza)
+    }
+
+    generatePillMap() {
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 12; j++) {
+                let pole = document.createElement("div")
+                pole.style.width = this.size + "px"
+                pole.style.height = this.size + "px"
+                pole.className = "pole2"
+                pole.id = (100 + i) + "|" + (100 + j)
+
+                this.pillPlansza.append(pole)
+
+                this.pillPlansza.style.position = "absolute"
+                this.pillPlansza.style.left = "320px"
+                this.pillPlansza.style.top = "2px"
+            }
+        }
+        document.body.append(this.pillPlansza)
     }
 
 }
@@ -51,20 +87,24 @@ export class Pill {
     zbicie1: string
     zbicie2: string
     constructor(color1: string, color2: string) {
-        this.x1 = Math.floor((dane.width / 2) - 1)
-        this.y1 = 0
-        this.x2 = Math.floor((dane.width / 2))
-        this.y2 = 0
+        this.x1 = 110
+        this.y1 = 103
+        this.x2 = 111
+        this.y2 = 103
         this.color1 = color1
         this.color2 = color2
         this.rotation = 0
-        this.flag = true
+        this.flag = false
         this.zbicie1 = "white"
         this.zbicie2 = "white"
     }
 
     deFlag() {
         this.flag = false
+    }
+
+    Flag() {
+        this.flag = true
     }
 
     renderPill() {
@@ -212,7 +252,15 @@ export class Pill {
     }
 }
 
-export class Virus {
+interface intVirus {
+    x: number
+    y: number
+    color: string
+    zbicie: string
+    renderVirus: (frame: number) => void
+}
+
+export class Virus implements intVirus {
     x: number
     y: number
     color: string
@@ -258,6 +306,7 @@ export class Virus {
 interface Dane {
     kolejka: number,
     wynik: number,
+    pill?: Pill,
     pills: Pill[],
     viruses: Virus[],
     width: number,
@@ -269,25 +318,74 @@ interface Dane {
 export let dane: Dane = {
     kolejka: 0,
     wynik: 0,
+
     pills: [],
     viruses: [],
+
     width: 8,
     height: 16,
-    state: "play",
+    state: "animacja",
 
 }
 
 interface kordy {
-    x: number,
-    y: number
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    rotation: number
 }
 
-// interface Anim {
-//     virusesFrames: kordy[],
-//     virusesTimes: number[]
-// }
+interface obraz {
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    rx: number,
+    ry: number,
+    rw: number,
+    rh: number
+}
 
-// export let animations: Anim = {
-//     virusesFrames: [{ x: 1704, y: 0 },],
-//     virusesTimes: [30, 30]
-// }
+interface Anim {
+    pillFrames: kordy[],
+    pillFrame: number,
+    armFrames: obraz[],
+    armFrame: number
+}
+
+export let animations: Anim = {
+    pillFrames: [
+        { x1: 110, y1: 103, x2: 111, y2: 103, rotation: 0 },
+        { x1: 110, y1: 103, x2: 110, y2: 102, rotation: 3 },
+        { x1: 110, y1: 102, x2: 109, y2: 102, rotation: 2 },
+        { x1: 109, y1: 101, x2: 109, y2: 102, rotation: 1 },
+        { x1: 108, y1: 101, x2: 109, y2: 101, rotation: 0 },
+        { x1: 108, y1: 101, x2: 108, y2: 100, rotation: 3 },
+        { x1: 108, y1: 101, x2: 107, y2: 101, rotation: 2 },
+        { x1: 107, y1: 100, x2: 107, y2: 101, rotation: 1 },
+        { x1: 106, y1: 101, x2: 107, y2: 101, rotation: 0 },
+        { x1: 106, y1: 101, x2: 106, y2: 100, rotation: 3 },
+        { x1: 106, y1: 101, x2: 105, y2: 101, rotation: 2 },
+        { x1: 105, y1: 100, x2: 105, y2: 101, rotation: 1 },
+        { x1: 104, y1: 101, x2: 105, y2: 101, rotation: 0 },
+        { x1: 104, y1: 101, x2: 104, y2: 100, rotation: 3 },
+        { x1: 104, y1: 101, x2: 103, y2: 101, rotation: 2 },
+        { x1: 103, y1: 100, x2: 103, y2: 101, rotation: 1 },
+        { x1: 102, y1: 101, x2: 103, y2: 101, rotation: 0 },
+        { x1: 102, y1: 101, x2: 102, y2: 100, rotation: 3 },
+        { x1: 102, y1: 102, x2: 101, y2: 102, rotation: 2 },
+        { x1: 101, y1: 101, x2: 101, y2: 102, rotation: 1 },
+        { x1: 100, y1: 102, x2: 101, y2: 102, rotation: 0 },
+        { x1: 100, y1: 103, x2: 101, y2: 103, rotation: 0 },
+        { x1: 100, y1: 104, x2: 101, y2: 104, rotation: 0 },
+        { x1: 100, y1: 105, x2: 101, y2: 105, rotation: 0 },
+    ],
+    pillFrame: 0,
+    armFrames: [
+        { x: 1536, y: 0, w: 24, h: 72, rx: 496, ry: 66, rw: 16, rh: 48 },
+        { x: 1464, y: 0, w: 48, h: 48, rx: 480, ry: 82, rw: 32, rh: 32 },
+        { x: 1416, y: 0, w: 24, h: 48, rx: 496, ry: 98, rw: 16, rh: 32 },
+    ],
+    armFrame: 0,
+}
