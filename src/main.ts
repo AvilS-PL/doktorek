@@ -88,6 +88,8 @@ function update() {
     }
     napisy["virusy"] = tempCheck
     napisy["score"] = napisy["levelScore"] - (napisy["virusy"] * 100)
+    localStorage.setItem("score", napisy["score"].toString());
+    console.log(localStorage.getItem("score"))
 }
 
 function render() {
@@ -348,15 +350,15 @@ function spadanie() {
 
 document.body.addEventListener("keydown", (e: KeyboardEvent) => {
     if (dane.state == "play") {
-        if (e.code == "KeyQ") {
-            makeRotation("KeyQ")
-        } else if (e.code == "KeyE") {
-            makeRotation("KeyE")
-        } else if (e.code == "KeyA") {
+        if (e.code == "ArrowUp" || e.code == "KeyW") {
+            makeRotation("ArrowUp")
+        } else if (e.code == "ShiftLeft") {
+            makeRotation("ShiftLeft")
+        } else if (e.code == "KeyA" || e.code == "ArrowLeft") {
             makeMove("KeyA")
-        } else if (e.code == "KeyD") {
+        } else if (e.code == "KeyD" || e.code == "ArrowRight") {
             makeMove("KeyD")
-        } else if (e.code == "KeyS") {
+        } else if (e.code == "KeyS" || e.code == "ArrowDown") {
             makeMove("KeyS")
         }
     }
@@ -410,22 +412,22 @@ function makeRotation(key: string) {
     if (rotation == 0) {
         if (main.tab[y1 - 1] != undefined) {
             if (main.tab[y1 - 1][x1] == 0) {
-                if (key == "KeyE") {
+                if (key == "ShiftLeft") {
                     dane.pills[dane.kolejka].y1--
                     dane.pills[dane.kolejka].x2--
                     dane.pills[dane.kolejka].rotation++
-                } else if (key == "KeyQ") {
+                } else if (key == "ArrowUp") {
                     dane.pills[dane.kolejka].x2--
                     dane.pills[dane.kolejka].y2--
                     dane.pills[dane.kolejka].rotation = 3
                 }
             } else {
                 if (main.tab[y1 + 1][x1] == 0) {
-                    if (key == "KeyE") {
+                    if (key == "ShiftLeft") {
                         dane.pills[dane.kolejka].y2++
                         dane.pills[dane.kolejka].x2--
                         dane.pills[dane.kolejka].rotation++
-                    } else if (key == "KeyQ") {
+                    } else if (key == "ArrowUp") {
                         dane.pills[dane.kolejka].y1++
                         dane.pills[dane.kolejka].x2--
                         dane.pills[dane.kolejka].rotation = 3
@@ -434,11 +436,11 @@ function makeRotation(key: string) {
             }
         } else {
             if (main.tab[y1 + 1][x1] == 0) {
-                if (key == "KeyE") {
+                if (key == "ShiftLeft") {
                     dane.pills[dane.kolejka].y2++
                     dane.pills[dane.kolejka].x2--
                     dane.pills[dane.kolejka].rotation++
-                } else if (key == "KeyQ") {
+                } else if (key == "ArrowUp") {
                     dane.pills[dane.kolejka].y1++
                     dane.pills[dane.kolejka].x2--
                     dane.pills[dane.kolejka].rotation = 3
@@ -449,22 +451,22 @@ function makeRotation(key: string) {
     } else if (rotation == 1) {
         if (main.tab[y2][x2 + 1] != undefined) {
             if (main.tab[y2][x2 + 1] == 0) {
-                if (key == "KeyE") {
+                if (key == "ShiftLeft") {
                     dane.pills[dane.kolejka].x1++
                     dane.pills[dane.kolejka].y1++
                     dane.pills[dane.kolejka].rotation++
-                } else if (key == "KeyQ") {
+                } else if (key == "ArrowUp") {
                     dane.pills[dane.kolejka].y1++
                     dane.pills[dane.kolejka].x2++
                     dane.pills[dane.kolejka].rotation--
                 }
             } else {
                 if (main.tab[y2][x2 - 1] == 0) {
-                    if (key == "KeyE") {
+                    if (key == "ShiftLeft") {
                         dane.pills[dane.kolejka].y1++
                         dane.pills[dane.kolejka].x2--
                         dane.pills[dane.kolejka].rotation++
-                    } else if (key == "KeyQ") {
+                    } else if (key == "ArrowUp") {
                         dane.pills[dane.kolejka].y1++
                         dane.pills[dane.kolejka].x1--
                         dane.pills[dane.kolejka].rotation--
@@ -473,11 +475,11 @@ function makeRotation(key: string) {
             }
         } else {
             if (main.tab[y2][x2 - 1] == 0) {
-                if (key == "KeyE") {
+                if (key == "ShiftLeft") {
                     dane.pills[dane.kolejka].y1++
                     dane.pills[dane.kolejka].x2--
                     dane.pills[dane.kolejka].rotation++
-                } else if (key == "KeyQ") {
+                } else if (key == "ArrowUp") {
                     dane.pills[dane.kolejka].y1++
                     dane.pills[dane.kolejka].x1--
                     dane.pills[dane.kolejka].rotation--
@@ -486,11 +488,11 @@ function makeRotation(key: string) {
         }
     } else if (rotation == 2) {
         if (main.tab[y2 - 1] != undefined && main.tab[y2 - 1][x2] == 0) {
-            if (key == "KeyE") {
+            if (key == "ShiftLeft") {
                 dane.pills[dane.kolejka].x1--
                 dane.pills[dane.kolejka].y2--
                 dane.pills[dane.kolejka].rotation++
-            } else if (key == "KeyQ") {
+            } else if (key == "ArrowUp") {
                 dane.pills[dane.kolejka].x1--
                 dane.pills[dane.kolejka].y1--
                 dane.pills[dane.kolejka].rotation--
@@ -499,22 +501,22 @@ function makeRotation(key: string) {
     } else if (rotation == 3) {
         if (main.tab[y1][x1 + 1] != undefined) {
             if (main.tab[y1][x1 + 1] == 0) {
-                if (key == "KeyE") {
+                if (key == "ShiftLeft") {
                     dane.pills[dane.kolejka].x2++
                     dane.pills[dane.kolejka].y2++
                     dane.pills[dane.kolejka].rotation = 0
-                } else if (key == "KeyQ") {
+                } else if (key == "ArrowUp") {
                     dane.pills[dane.kolejka].x1++
                     dane.pills[dane.kolejka].y2++
                     dane.pills[dane.kolejka].rotation--
                 }
             } else {
                 if (main.tab[y2][x1 - 1] == 0) {
-                    if (key == "KeyE") {
+                    if (key == "ShiftLeft") {
                         dane.pills[dane.kolejka].y2++
                         dane.pills[dane.kolejka].x1--
                         dane.pills[dane.kolejka].rotation = 0
-                    } else if (key == "KeyQ") {
+                    } else if (key == "ArrowUp") {
                         dane.pills[dane.kolejka].y2++
                         dane.pills[dane.kolejka].x2--
                         dane.pills[dane.kolejka].rotation--
@@ -523,11 +525,11 @@ function makeRotation(key: string) {
             }
         } else {
             if (main.tab[y2][x1 - 1] == 0) {
-                if (key == "KeyE") {
+                if (key == "ShiftLeft") {
                     dane.pills[dane.kolejka].y2++
                     dane.pills[dane.kolejka].x1--
                     dane.pills[dane.kolejka].rotation = 0
-                } else if (key == "KeyQ") {
+                } else if (key == "ArrowUp") {
                     dane.pills[dane.kolejka].y2++
                     dane.pills[dane.kolejka].x2--
                     dane.pills[dane.kolejka].rotation--
@@ -560,7 +562,6 @@ function createPill() {
         dane.kolejka++
         dane.state = "animacja"
     }
-    console.log(localStorage.getItem("top"))
 }
 
 function checkKill() {
@@ -650,7 +651,7 @@ let tick: number = 0
 let workTick: number = 0
 let prevTimestamp: number
 let fpsCh = new Date().getTime()
-let oldFps = fpsCh
+let oldFps = fpsCh - 1000
 function refresh(timestamp: number) {
     if (timestamp != prevTimestamp) {
         prevTimestamp = timestamp
@@ -722,7 +723,7 @@ function refresh(timestamp: number) {
 
         if (tick == 60) {
             tick = 0
-            document.getElementById("fps").innerText = Math.floor(60000 / (fpsCh - oldFps)).toString()
+            document.getElementById("fps").innerText = "fps: " + Math.floor(60000 / (fpsCh - oldFps)).toString()
             oldFps = fpsCh
             fpsCh = new Date().getTime()
 

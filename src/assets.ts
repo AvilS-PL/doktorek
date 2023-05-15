@@ -251,7 +251,7 @@ export class Pill {
 
     }
 }
-
+//pierwszy interface jako implementacja w kasie
 interface intVirus {
     x: number
     y: number
@@ -302,7 +302,7 @@ export class Virus implements intVirus {
         }
     }
 }
-
+//drugi interfejs
 interface Dane {
     kolejka: number,
     pill?: Pill,
@@ -326,6 +326,7 @@ export let dane: Dane = {
 
 }
 
+//trzeci interfejs
 interface objList {
     [index: string]: number
 }
