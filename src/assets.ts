@@ -347,11 +347,30 @@ interface obraz {
     rh: number
 }
 
+interface xy {
+    x: number,
+    y: number
+}
+
 interface Anim {
     pillFrames: kordy[],
     pillFrame: number,
+
     armFrames: obraz[],
-    armFrame: number
+    armFrame: number,
+
+    redVirusFrames1: obraz[],
+    yellowVirusFrames1: obraz[],
+    blueVirusFrames1: obraz[],
+    redVirusFrames2: obraz[],
+    yellowVirusFrames2: obraz[],
+    blueVirusFrames2: obraz[],
+
+    virusesKordy: xy[]
+    virusesKord: number[]
+
+    virusesFrame1: number
+    virusesFrame2: number
 }
 
 export let animations: Anim = {
@@ -382,10 +401,64 @@ export let animations: Anim = {
         { x1: 100, y1: 105, x2: 101, y2: 105, rotation: 0 },
     ],
     pillFrame: 0,
+
     armFrames: [
         { x: 1536, y: 0, w: 24, h: 72, rx: 496, ry: 66, rw: 16, rh: 48 },
         { x: 1464, y: 0, w: 48, h: 48, rx: 480, ry: 82, rw: 32, rh: 32 },
         { x: 1416, y: 0, w: 24, h: 48, rx: 496, ry: 98, rw: 16, rh: 32 },
     ],
     armFrame: 0,
+
+    redVirusFrames1: [
+        { x: 480, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 384, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 480, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 576, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 480, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+    ],
+    yellowVirusFrames1: [
+        { x: 864, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 768, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 864, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 960, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 864, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+    ],
+    blueVirusFrames1: [
+        { x: 96, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 0, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 96, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 192, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 96, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+    ],
+
+    redVirusFrames2: [
+        { x: 480, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 672, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+    ],
+    yellowVirusFrames2: [
+        { x: 864, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 1056, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+    ],
+    blueVirusFrames2: [
+        { x: 96, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+        { x: 288, y: 0, w: 96, h: 72, rx: 0, ry: 0, rw: 64, rh: 48 },
+    ],
+
+    virusesKordy: [
+        { x: 120, y: 300 },
+        { x: 130, y: 280 },
+        { x: 140, y: 260 },
+        { x: 120, y: 240 },
+        { x: 100, y: 220 },
+        { x: 70, y: 220 },
+        { x: 50, y: 240 },
+        { x: 40, y: 260 },
+        { x: 50, y: 280 },
+        { x: 60, y: 300 },
+        { x: 80, y: 310 },
+        { x: 100, y: 310 },
+    ],
+    virusesKord: [0, 4, 8],
+    virusesFrame1: 0,
+    virusesFrame2: 0,
 }

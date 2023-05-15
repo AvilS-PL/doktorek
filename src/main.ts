@@ -115,6 +115,53 @@ function render() {
         renderAny(animations.armFrames[animations.armFrame], "arm")
     }
 
+    let a1: number = 0
+    if (dane.state == "gameover") {
+        if (tick % 20 == 0 && tick != 0) {
+            if (animations.virusesFrame2 < animations.redVirusFrames2.length - 1) {
+                animations.virusesFrame2++
+            } else {
+                animations.virusesFrame2 = 0
+            }
+        }
+        animations.redVirusFrames2[animations.virusesFrame2].rx = animations.virusesKordy[animations.virusesKord[0]].x
+        animations.redVirusFrames2[animations.virusesFrame2].ry = animations.virusesKordy[animations.virusesKord[0]].y
+        animations.yellowVirusFrames2[animations.virusesFrame2].rx = animations.virusesKordy[animations.virusesKord[1]].x
+        animations.yellowVirusFrames2[animations.virusesFrame2].ry = animations.virusesKordy[animations.virusesKord[1]].y
+        animations.blueVirusFrames2[animations.virusesFrame2].rx = animations.virusesKordy[animations.virusesKord[2]].x
+        animations.blueVirusFrames2[animations.virusesFrame2].ry = animations.virusesKordy[animations.virusesKord[2]].y
+        renderAny(animations.redVirusFrames2[animations.virusesFrame2], "rVirus")
+        renderAny(animations.yellowVirusFrames2[animations.virusesFrame2], "yVirus")
+        renderAny(animations.blueVirusFrames2[animations.virusesFrame2], "bVirus")
+    } else {
+        if (tick % 15 == 0 && tick != 0) {
+
+            if (animations.virusesFrame1 < animations.redVirusFrames1.length - 1) {
+                animations.virusesFrame1++
+            } else {
+                animations.virusesFrame1 = 0
+                for (let i = 0; i < animations.virusesKord.length; i++) {
+                    if (animations.virusesKord[i] < animations.virusesKordy.length - 1) {
+                        animations.virusesKord[i]++
+                    } else {
+                        animations.virusesKord[i] = 0
+                    }
+                }
+            }
+        }
+
+
+        animations.redVirusFrames1[animations.virusesFrame1].rx = animations.virusesKordy[animations.virusesKord[0]].x
+        animations.redVirusFrames1[animations.virusesFrame1].ry = animations.virusesKordy[animations.virusesKord[0]].y
+        animations.yellowVirusFrames1[animations.virusesFrame1].rx = animations.virusesKordy[animations.virusesKord[1]].x
+        animations.yellowVirusFrames1[animations.virusesFrame1].ry = animations.virusesKordy[animations.virusesKord[1]].y
+        animations.blueVirusFrames1[animations.virusesFrame1].rx = animations.virusesKordy[animations.virusesKord[2]].x
+        animations.blueVirusFrames1[animations.virusesFrame1].ry = animations.virusesKordy[animations.virusesKord[2]].y
+        renderAny(animations.redVirusFrames1[animations.virusesFrame1], "rVirus")
+        renderAny(animations.yellowVirusFrames1[animations.virusesFrame1], "yVirus")
+        renderAny(animations.blueVirusFrames1[animations.virusesFrame1], "bVirus")
+    }
+
 }
 
 //okresowane opadanie o jeden blok obecnie sterowanej tabletki
@@ -631,6 +678,7 @@ function refresh(timestamp: number) {
         } else {
             tick++
         }
+
     }
 
     window.requestAnimationFrame(refresh)
