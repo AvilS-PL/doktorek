@@ -332,9 +332,10 @@ interface objList {
     [index: string]: number
 }
 export let napisy: objList = {
-    score: 1234,
-    top: 555,
+    score: 0,
+    top: 0,
     level: 1,
+    levelScore: 0,
     virusy: 0
 }
 

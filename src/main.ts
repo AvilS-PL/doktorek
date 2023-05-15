@@ -14,7 +14,15 @@ let main = new Plansza(dane.width, dane.height, 16)
 dane.pill = new Pill(rnc(), rnc())
 // dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 
+if (localStorage.getItem("top")) {
+    napisy["top"] = + localStorage.getItem("top")
+} else {
+    napisy["top"] = 0
+    localStorage.setItem("top", "0")
+}
+
 napisy["virusy"] = 3
+napisy["levelScore"] = napisy["virusy"] * 100
 for (let i = 0; i < napisy["virusy"]; i++) {
     dane.viruses[i] = new Virus(rnc())
     for (let j = 0; j < dane.viruses.length - 1; j++) {
@@ -83,7 +91,7 @@ function update() {
         }
     }
     napisy["virusy"] = tempCheck
-    // console.log("update")
+    napisy["score"] = napisy["levelScore"] - (napisy["virusy"] * 100)
 }
 
 //renderowanie img
@@ -565,10 +573,15 @@ function createPill() {
         dane.state = "gameover"
     } else if (tempCheck == 0) {
         dane.state = "gamewin"
+        if (napisy["top"] < napisy["score"]) {
+            napisy["top"] = napisy["score"]
+            localStorage.setItem("top", napisy["top"].toString());
+        }
     } else {
         dane.kolejka++
         dane.state = "animacja"
     }
+    console.log(localStorage.getItem("top"))
 }
 
 //sprawdzenie czy występuje jakieś zbicie
