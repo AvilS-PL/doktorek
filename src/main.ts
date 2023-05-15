@@ -2,15 +2,14 @@ import { Plansza, Pill, Virus, dane, animations, napisy } from './assets'
 import { rnc, renderAny, renderMany, imgLoad } from './functions'
 
 
+let main = new Plansza(dane.width, dane.height, 16)
+dane.pill = new Pill(rnc(), rnc())
 load()
 async function load() {
     await imgLoad()
     update()
     window.requestAnimationFrame(refresh)
 }
-
-let main = new Plansza(dane.width, dane.height, 16)
-dane.pill = new Pill(rnc(), rnc())
 
 if (localStorage.getItem("top")) {
     napisy["top"] = + localStorage.getItem("top")
