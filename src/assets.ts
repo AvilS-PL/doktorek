@@ -326,8 +326,6 @@ export let dane: Dane = {
 
 }
 
-
-
 interface objList {
     [index: string]: number
 }
