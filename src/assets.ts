@@ -305,7 +305,6 @@ export class Virus implements intVirus {
 
 interface Dane {
     kolejka: number,
-    wynik: number,
     pill?: Pill,
     pills: Pill[],
     viruses: Virus[],
@@ -317,7 +316,6 @@ interface Dane {
 
 export let dane: Dane = {
     kolejka: 0,
-    wynik: 0,
 
     pills: [],
     viruses: [],
@@ -326,6 +324,18 @@ export let dane: Dane = {
     height: 16,
     state: "animacja",
 
+}
+
+
+
+interface objList {
+    [index: string]: number
+}
+export let napisy: objList = {
+    score: 1234,
+    top: 555,
+    level: 1,
+    virusy: 0
 }
 
 interface kordy {

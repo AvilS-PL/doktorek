@@ -1,5 +1,5 @@
-import { Plansza, Pill, Virus, dane, animations } from './assets'
-import { rnc, renderAny, imgLoad } from './functions'
+import { Plansza, Pill, Virus, dane, animations, napisy } from './assets'
+import { rnc, renderAny, renderMany, imgLoad } from './functions'
 
 
 // Inicjacja gry, planszy, wirusów i pierwszej tabletki + załadoanie spritesheeta
@@ -14,7 +14,8 @@ let main = new Plansza(dane.width, dane.height, 16)
 dane.pill = new Pill(rnc(), rnc())
 // dane.pills[dane.kolejka] = new Pill(rnc(), rnc())
 
-for (let i = 0; i < 1; i++) {
+napisy["virusy"] = 3
+for (let i = 0; i < napisy["virusy"]; i++) {
     dane.viruses[i] = new Virus(rnc())
     for (let j = 0; j < dane.viruses.length - 1; j++) {
         if (dane.viruses[i].x == dane.viruses[j].x && dane.viruses[i].y == dane.viruses[j].y) {
@@ -75,6 +76,13 @@ function update() {
         main.tab[dane.pills[dane.pills.length - 1].y2][dane.pills[dane.pills.length - 1].x2] = 9
     }
 
+    let tempCheck: number = 0
+    for (let i = 0; i < dane.viruses.length; i++) {
+        if (dane.viruses[i].color != "white") {
+            tempCheck++
+        }
+    }
+    napisy["virusy"] = tempCheck
     // console.log("update")
 }
 
@@ -162,6 +170,60 @@ function render() {
         renderAny(animations.blueVirusFrames1[animations.virusesFrame1], "bVirus")
     }
 
+    convertNumberToNapis(napisy["top"], 80, 80, "top", 7)
+    convertNumberToNapis(napisy["score"], 80, 128, "score", 7)
+    convertNumberToNapis(napisy["level"], 560, 240, "level", 2)
+    convertNumberToNapis(napisy["virusy"], 560, 335, "virusy", 2)
+}
+
+interface obraz {
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    rx: number,
+    ry: number,
+    rw: number,
+    rh: number
+}
+
+function convertNumberToNapis(n: number, ox: number, oy: number, what: string, l: number) {
+    let tempWord: string[] = []
+    for (let i = 0; i < l - n.toString().length; i++) {
+        tempWord.push("0")
+    }
+    for (let i = 0; i < n.toString().length; i++) {
+        tempWord.push(n.toString()[i])
+    }
+    let word = tempWord.join("")
+    let width = word.length * 16
+    let part: obraz
+    let parts: obraz[] = []
+    for (let i = 0; i < word.length; i++) {
+        if (word[i] == "0") {
+            part = { x: 1152, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "1") {
+            part = { x: 1176, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "2") {
+            part = { x: 1200, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "3") {
+            part = { x: 1224, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "4") {
+            part = { x: 1248, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "5") {
+            part = { x: 1272, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "6") {
+            part = { x: 1296, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "7") {
+            part = { x: 1320, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "8") {
+            part = { x: 1344, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        } else if (word[i] == "9") {
+            part = { x: 1368, y: 0, w: 24, h: 24, rx: i * 16, ry: 0, rw: 16, rh: 16 }
+        }
+        parts.push(part)
+    }
+    renderMany(parts, ox, oy, width, 16, what)
 }
 
 //okresowane opadanie o jeden blok obecnie sterowanej tabletki
@@ -499,7 +561,7 @@ function createPill() {
         }
     }
 
-    if ((main.tab[0][(dane.width / 2) - 1] != 0 || main.tab[0][(dane.width / 2)] != 0) && dane.state) {
+    if ((main.tab[0][(dane.width / 2) - 1] != 0 || main.tab[0][(dane.width / 2)] != 0)) {
         dane.state = "gameover"
     } else if (tempCheck == 0) {
         dane.state = "gamewin"
